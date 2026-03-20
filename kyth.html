@@ -1,0 +1,2918 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.workers.dev https://*.workers.dev/*; img-src 'self' data:; frame-ancestors 'none';" />
+    <title>Kyth</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap");
+
+      :root {
+        --bg: #0a0a0f;
+        --surface: #111118;
+        --surface2: #1a1a24;
+        --border: #2a2a38;
+        --accent: #c8a96e;
+        --accent2: #7c9ccc;
+        --text: #e8e4dc;
+        --text-muted: #7a7a8a;
+        --text-dim: #4a4a5a;
+        --success: #6aaa7a;
+        --danger: #cc6666;
+        --radius: 6px;
+        --transition: 0.2s ease;
+      }
+      [data-theme="light"] {
+        --bg: #f5f3ee;
+        --surface: #ffffff;
+        --surface2: #eeece6;
+        --border: #d8d4cc;
+        --accent: #8a6a2e;
+        --accent2: #3a5c8c;
+        --text: #1a1814;
+        --text-muted: #6a6860;
+        --text-dim: #aaa9a4;
+        --success: #3a7a4a;
+        --danger: #8a3333;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        font-size: 15px;
+        min-height: 100vh;
+      }
+
+      /* ── TOP BAR ── */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        backdrop-filter: blur(12px);
+      }
+      .topbar-brand {
+        font-family: "Playfair Display", serif;
+        font-size: 1.1rem;
+        letter-spacing: 0.02em;
+        color: var(--accent);
+      }
+      .topbar-brand span {
+        color: var(--text-muted);
+        font-style: italic;
+        font-size: 0.85rem;
+        margin-left: 8px;
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .progress-ring-wrap {
+        position: relative;
+        width: 36px;
+        height: 36px;
+      }
+      .progress-ring-label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 9px;
+        color: var(--accent);
+      }
+      .progress-ring circle {
+        fill: none;
+        stroke-width: 3;
+      }
+      .progress-ring .track {
+        stroke: var(--border);
+      }
+      .progress-ring .fill {
+        stroke: var(--accent);
+        stroke-linecap: round;
+        transition: stroke-dashoffset 0.5s ease;
+        transform: rotate(-90deg);
+        transform-origin: 18px 18px;
+      }
+
+      .btn {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 7px 16px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        background: var(--surface2);
+        color: var(--text);
+        transition: all var(--transition);
+        letter-spacing: 0.01em;
+      }
+      .btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .btn-accent {
+        background: var(--accent);
+        color: var(--bg);
+        border-color: var(--accent);
+        font-weight: 600;
+      }
+      .btn-accent:hover {
+        background: transparent;
+        color: var(--accent);
+      }
+      .btn-icon {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        border-radius: 50%;
+      }
+
+      /* ── LAYOUT ── */
+      .layout {
+        display: flex;
+        gap: 0;
+        min-height: calc(100vh - 56px);
+      }
+
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 56px;
+        height: calc(100vh - 56px);
+        overflow-y: auto;
+        border-right: 1px solid var(--border);
+        padding: 1.5rem 0;
+      }
+      .sidebar-label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 10px;
+        color: var(--text-dim);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 0 1.5rem 0.75rem;
+      }
+      .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 1.5rem;
+        cursor: pointer;
+        font-size: 13px;
+        color: var(--text-muted);
+        border-left: 2px solid transparent;
+        transition: all var(--transition);
+        text-decoration: none;
+      }
+      .sidebar-item:hover {
+        color: var(--text);
+        background: var(--surface);
+      }
+      .sidebar-item.active {
+        color: var(--accent);
+        border-left-color: var(--accent);
+        background: var(--surface);
+      }
+      .sidebar-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--border);
+        flex-shrink: 0;
+        transition: background var(--transition);
+      }
+      .sidebar-item.done .sidebar-dot {
+        background: var(--success);
+      }
+      .sidebar-item.partial .sidebar-dot {
+        background: var(--accent);
+      }
+
+      .main {
+        flex: 1;
+        padding: 2.5rem 3rem;
+        max-width: 760px;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        margin-bottom: 3rem;
+      }
+      .hero-eyebrow {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.75rem;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 2.6rem;
+        font-weight: 400;
+        line-height: 1.2;
+        color: var(--text);
+        margin-bottom: 1rem;
+      }
+      .hero h1 em {
+        color: var(--accent);
+        font-style: italic;
+      }
+      .hero p {
+        color: var(--text-muted);
+        max-width: 520px;
+        font-size: 15px;
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 2.5rem 0;
+      }
+
+      /* ── SECTION ── */
+      .section {
+        margin-bottom: 1.5rem;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition: border-color var(--transition);
+        user-select: none;
+      }
+      .section-header:hover {
+        border-color: var(--accent2);
+      }
+      .section-header.open {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-color: transparent;
+      }
+      .section-num {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        color: var(--text-dim);
+        width: 24px;
+        flex-shrink: 0;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.05rem;
+        flex: 1;
+      }
+      .section-badge {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 20px;
+        background: var(--surface2);
+        color: var(--text-dim);
+        border: 1px solid var(--border);
+      }
+      .section-badge.done {
+        color: var(--success);
+        border-color: var(--success);
+      }
+      .section-arrow {
+        color: var(--text-dim);
+        font-size: 12px;
+        transition: transform var(--transition);
+      }
+      .section-header.open .section-arrow {
+        transform: rotate(180deg);
+      }
+
+      .section-body {
+        display: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-top: none;
+        border-bottom-left-radius: var(--radius);
+        border-bottom-right-radius: var(--radius);
+        padding: 1.5rem 1.5rem 1.5rem 2rem;
+      }
+      .section-body.open {
+        display: block;
+      }
+
+      /* ── QUESTION ── */
+      .q-group {
+        margin-bottom: 1.75rem;
+      }
+      .q-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+      }
+      .q-label .help-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        font-size: 10px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: help;
+        flex-shrink: 0;
+        margin-top: 2px;
+        position: relative;
+      }
+      .q-label .help-icon:hover::after {
+        content: attr(data-tip);
+        position: absolute;
+        left: 22px;
+        top: -4px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 400;
+        padding: 6px 10px;
+        border-radius: var(--radius);
+        width: 240px;
+        z-index: 10;
+        line-height: 1.4;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+      .q-hint {
+        font-size: 12px;
+        color: var(--text-dim);
+        margin-bottom: 6px;
+        font-style: italic;
+      }
+
+      input[type="text"],
+      textarea,
+      select {
+        width: 100%;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        padding: 10px 14px;
+        transition: border-color var(--transition);
+        resize: vertical;
+      }
+      input[type="text"]:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--accent2);
+        box-shadow: 0 0 0 3px rgba(124, 156, 204, 0.1);
+      }
+      textarea {
+        min-height: 90px;
+      }
+      select option {
+        background: var(--surface2);
+      }
+
+      .scale-group {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 4px;
+      }
+      .scale-btn {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--bg);
+        color: var(--text-muted);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .scale-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .scale-btn.selected {
+        background: var(--accent);
+        color: var(--bg);
+        border-color: var(--accent);
+        font-weight: 700;
+      }
+      .scale-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4px;
+      }
+      .scale-labels span {
+        font-size: 11px;
+        color: var(--text-dim);
+      }
+
+      .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 8px;
+      }
+      .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        cursor: pointer;
+        font-size: 13px;
+        transition: all var(--transition);
+        user-select: none;
+      }
+      .checkbox-item:hover {
+        border-color: var(--accent2);
+      }
+      .checkbox-item.checked {
+        border-color: var(--accent);
+        background: rgba(200, 169, 110, 0.08);
+        color: var(--accent);
+      }
+      .checkbox-item input {
+        display: none;
+      }
+      .checkbox-box {
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        border: 1px solid var(--border);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+      }
+      .checkbox-item.checked .checkbox-box {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--bg);
+      }
+
+      /* ── RADAR CHART ── */
+      .radar-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        margin-bottom: 2rem;
+      }
+      canvas#radarChart {
+        max-width: 320px;
+      }
+
+      /* ── SCORES ── */
+      .score-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 2rem;
+      }
+      .score-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px;
+        text-align: center;
+      }
+      .score-val {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        color: var(--accent);
+      }
+      .score-label {
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-top: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      /* ── EXPORT PANEL ── */
+      .export-panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 2rem;
+        margin-top: 2rem;
+      }
+      .export-panel h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+      }
+      .export-panel p {
+        color: var(--text-muted);
+        font-size: 13px;
+        margin-bottom: 1.5rem;
+      }
+      .export-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .generated-prompt {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.25rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        color: var(--text-muted);
+        max-height: 320px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        line-height: 1.7;
+        margin-top: 1.5rem;
+        display: none;
+      }
+
+      /* ── TOAST ── */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--surface2);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 12px 20px;
+        border-radius: var(--radius);
+        font-size: 13px;
+        font-family: "IBM Plex Mono", monospace;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: all 0.3s ease;
+        pointer-events: none;
+        z-index: 999;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ── KBD ── */
+      .kbd-hint {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+      }
+      .kbd-hint span {
+        font-size: 12px;
+        color: var(--text-dim);
+      }
+      kbd {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 3px;
+        padding: 2px 6px;
+        font-size: 11px;
+        font-family: "IBM Plex Mono", monospace;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          padding: 1.5rem;
+        }
+        .hero h1 {
+          font-size: 1.8rem;
+        }
+        .score-row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* ── SCROLLBAR ── */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
+
+      /* ── PRINT ── */
+      @media print {
+        .topbar,
+        .sidebar,
+        .export-panel,
+        .kbd-hint {
+          display: none;
+        }
+        body {
+          background: white;
+          color: black;
+        }
+        .section-body {
+          display: block !important;
+        }
+      }
+
+      .autosave-indicator {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 10px;
+        color: var(--text-dim);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .autosave-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--text-dim);
+        transition: background 0.3s;
+      }
+      .autosave-dot.saving {
+        background: var(--accent);
+      }
+      .autosave-dot.saved {
+        background: var(--success);
+      }
+
+      /* ── AI RESULT PANEL ── */
+      .ai-panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        margin-top: 2rem;
+        display: none;
+      }
+      .ai-panel.visible {
+        display: block;
+      }
+
+      .ai-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .ai-panel-header h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.15rem;
+        font-weight: 400;
+      }
+      .ai-export-btns {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .ai-content {
+        padding: 1.75rem 2rem;
+        font-size: 14.5px;
+        line-height: 1.85;
+        color: var(--text);
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+      .ai-content h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--accent);
+        margin: 2rem 0 0.5rem;
+        padding-bottom: 4px;
+        border-bottom: 1px solid var(--border);
+      }
+      .ai-content h2:first-child {
+        margin-top: 0;
+      }
+      .ai-content p {
+        margin-bottom: 0.85rem;
+      }
+      .ai-content ul {
+        margin: 0.5rem 0 0.85rem 1.25rem;
+      }
+      .ai-content li {
+        margin-bottom: 0.35rem;
+      }
+      .ai-content strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .ai-streaming {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        color: var(--text-muted);
+        padding: 2rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .ai-spinner {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        border-top-color: var(--accent);
+        animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .ai-plain {
+        white-space: pre-wrap;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        line-height: 1.8;
+      }
+
+      @media print {
+        .topbar,
+        .sidebar,
+        .export-panel,
+        .kbd-hint,
+        .ai-panel-header .ai-export-btns {
+          display: none;
+        }
+        .ai-panel {
+          border: none;
+          margin: 0;
+          display: block !important;
+        }
+        .ai-content {
+          max-height: none;
+          overflow: visible;
+        }
+        body {
+          background: white;
+          color: black;
+        }
+        .section-body {
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="topbar-brand">
+        Kyth <span>/ Self-Discovery Tool</span>
+      </div>
+      <div class="topbar-right">
+        <div class="autosave-indicator">
+          <div class="autosave-dot" id="autosaveDot"></div>
+          <span id="autosaveLabel">auto-save</span>
+        </div>
+        <div class="progress-ring-wrap">
+          <svg class="progress-ring" width="36" height="36">
+            <circle class="track" cx="18" cy="18" r="14" />
+            <circle
+              class="fill"
+              id="progressRing"
+              cx="18"
+              cy="18"
+              r="14"
+              stroke-dasharray="88"
+              stroke-dashoffset="88"
+            />
+          </svg>
+          <div class="progress-ring-label" id="progressLabel">0%</div>
+        </div>
+        <button class="btn btn-icon" id="themeToggle" title="Toggle theme">
+          ◑
+        </button>
+      </div>
+    </div>
+
+    <!-- LAYOUT -->
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <nav class="sidebar">
+        <div class="sidebar-label">Sections</div>
+        <a class="sidebar-item" href="#s0" data-section="0"
+          ><div class="sidebar-dot"></div>
+          Overview</a
+        >
+        <a class="sidebar-item" href="#s1" data-section="1"
+          ><div class="sidebar-dot"></div>
+          Current Life</a
+        >
+        <a class="sidebar-item" href="#s2" data-section="2"
+          ><div class="sidebar-dot"></div>
+          Energy & Focus</a
+        >
+        <a class="sidebar-item" href="#s3" data-section="3"
+          ><div class="sidebar-dot"></div>
+          Skills</a
+        >
+        <a class="sidebar-item" href="#s4" data-section="4"
+          ><div class="sidebar-dot"></div>
+          Interests</a
+        >
+        <a class="sidebar-item" href="#s5" data-section="5"
+          ><div class="sidebar-dot"></div>
+          Values</a
+        >
+        <a class="sidebar-item" href="#s6" data-section="6"
+          ><div class="sidebar-dot"></div>
+          Vision</a
+        >
+        <a class="sidebar-item" href="#s7" data-section="7"
+          ><div class="sidebar-dot"></div>
+          Identity</a
+        >
+        <a class="sidebar-item" href="#s8" data-section="8"
+          ><div class="sidebar-dot"></div>
+          Obstacles</a
+        >
+        <a class="sidebar-item" href="#s9" data-section="9"
+          ><div class="sidebar-dot"></div>
+          Decisions</a
+        >
+        <a class="sidebar-item" href="#s10" data-section="10"
+          ><div class="sidebar-dot"></div>
+          Resources</a
+        >
+        <a class="sidebar-item" href="#s11" data-section="11"
+          ><div class="sidebar-dot"></div>
+          Risk & Experiments</a
+        >
+        <a class="sidebar-item" href="#export" data-section="export"
+          ><div class="sidebar-dot"></div>
+          Generate Prompt</a
+        >
+      </nav>
+
+      <!-- MAIN -->
+      <main class="main">
+        <div class="hero">
+          <div class="hero-eyebrow">Kyth</div>
+          <h1>Understand yourself<br /><em>more than you ever have.</em></h1>
+          <p>
+            Answer honestly. There are no right answers — only honest ones. Your
+            responses generate a powerful AI analysis prompt combining
+            psychology, career strategy, and behavioral science.
+          </p>
+        </div>
+
+        <!-- SCORE CARDS -->
+        <div class="score-row">
+          <div class="score-card">
+            <div class="score-val" id="scoreCompletion">0%</div>
+            <div class="score-label">Completion</div>
+          </div>
+          <div class="score-card">
+            <div class="score-val" id="scoreFocus">—</div>
+            <div class="score-label">Focus Score</div>
+          </div>
+          <div class="score-card">
+            <div class="score-val" id="scoreProcras">—</div>
+            <div class="score-label">Procras. Risk</div>
+          </div>
+        </div>
+
+        <!-- RADAR CHART -->
+        <div class="radar-wrap">
+          <canvas id="radarChart" width="320" height="280"></canvas>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- SECTIONS -->
+        <!-- S1: Current Life -->
+        <div class="section" id="s1">
+          <div class="section-header open">
+            <span class="section-num">01</span>
+            <span class="section-title">Current Life Situation</span>
+            <span class="section-badge" id="badge-s1">0 / 7</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body open">
+            <div class="q-group">
+              <div class="q-label">
+                Where do you live, and does it serve your goals?
+                <span
+                  class="help-icon"
+                  data-tip="Location shapes opportunity. Be honest about whether your environment limits or enables you."
+                  >?</span
+                >
+              </div>
+              <input
+                type="text"
+                id="q_location"
+                placeholder="City, country — and your honest assessment..."
+              />
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What is your current work / income situation?
+              </div>
+              <textarea
+                id="q_work"
+                placeholder="Employed, freelance, student, unemployed — describe what you actually do each day..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                How is your financial situation?
+                <span
+                  class="help-icon"
+                  data-tip="Finances create or remove constraints. Be honest — the AI needs this to give realistic advice."
+                  >?</span
+                >
+              </div>
+              <select id="q_finance">
+                <option value="">Select...</option>
+                <option>Struggling (month-to-month)</option>
+                <option>Stable but tight</option>
+                <option>Comfortable</option>
+                <option>Financially free</option>
+                <option>Significant debt</option>
+              </select>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What does a typical weekday look like for you?
+              </div>
+              <textarea
+                id="q_routine"
+                placeholder="Walk through your day from waking to sleep. Be specific — the boring parts matter."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What is your highest level of education / training?
+              </div>
+              <input
+                type="text"
+                id="q_education"
+                placeholder="Degree, field, self-taught areas..."
+              />
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                How satisfied are you with your life right now?
+              </div>
+              <div class="scale-group" id="scale_satisfaction"></div>
+              <div class="scale-labels">
+                <span>1 — Miserable</span><span>10 — Thriving</span>
+              </div>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What do you wish were different right now?
+              </div>
+              <textarea
+                id="q_wish_different"
+                placeholder="Be blunt. What would you change tomorrow if you could?"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- S2: Energy & Focus -->
+        <div class="section" id="s2">
+          <div class="section-header">
+            <span class="section-num">02</span>
+            <span class="section-title">Energy & Focus Patterns</span>
+            <span class="section-badge" id="badge-s2">0 / 5</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">
+                What activities make you lose track of time?
+                <span
+                  class="help-icon"
+                  data-tip="Flow states reveal what your brain is wired for. These are clues, not hobbies."
+                  >?</span
+                >
+              </div>
+              <textarea
+                id="q_flow"
+                placeholder="Think of moments when you were fully absorbed — work, hobby, conversation..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What activities drain your energy even if you're "good" at them?
+              </div>
+              <textarea
+                id="q_drain"
+                placeholder="Things you avoid, delay, or feel exhausted by after doing..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                When during the day are you at peak mental performance?
+              </div>
+              <select id="q_peak_time">
+                <option value="">Select...</option>
+                <option>Early morning (5–8am)</option>
+                <option>Morning (8–12pm)</option>
+                <option>Afternoon (12–5pm)</option>
+                <option>Evening (5–10pm)</option>
+                <option>Night (10pm–2am)</option>
+                <option>Inconsistent / unpredictable</option>
+              </select>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                Describe your attention span honestly.
+                <span
+                  class="help-icon"
+                  data-tip="Not how you wish it was — how it actually is. Do you context-switch constantly? Or hyperfocus?"
+                  >?</span
+                >
+              </div>
+              <div class="scale-group" id="scale_attention"></div>
+              <div class="scale-labels">
+                <span>1 — Scattered / can't focus</span
+                ><span>10 — Deep focus for hours</span>
+              </div>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What are your biggest daily distractions?
+              </div>
+              <textarea
+                id="q_distractions"
+                placeholder="Social media, people, overthinking, environment..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- S3: Skills -->
+        <div class="section" id="s3">
+          <div class="section-header">
+            <span class="section-num">03</span>
+            <span class="section-title">Skills & Abilities</span>
+            <span class="section-badge" id="badge-s3">0 / 6</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">
+                What are you genuinely better at than most people you know?
+              </div>
+              <textarea
+                id="q_strengths_real"
+                placeholder="Not what you wish — what people actually come to you for, what you do effortlessly..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                Rate your skill areas (check all that genuinely apply):
+              </div>
+              <div class="checkbox-grid" id="skills_grid"></div>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What skill have you invested the most time developing?
+              </div>
+              <input
+                type="text"
+                id="q_top_skill"
+                placeholder="Be specific — not just 'coding' but what kind, for how long..."
+              />
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What skill do you wish you had developed earlier?
+              </div>
+              <input type="text" id="q_wish_skill" placeholder="" />
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                How do you learn best?
+                <span
+                  class="help-icon"
+                  data-tip="This determines what skill-building paths will actually work for you."
+                  >?</span
+                >
+              </div>
+              <div class="checkbox-grid" id="learning_grid"></div>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What skill are you currently building or want to build?
+              </div>
+              <textarea
+                id="q_building"
+                placeholder="What have you been studying, practicing, or thinking about learning..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- S4: Interests -->
+        <div class="section" id="s4">
+          <div class="section-header">
+            <span class="section-num">04</span>
+            <span class="section-title">Interests & Curiosities</span>
+            <span class="section-badge" id="badge-s4">0 / 4</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">
+                What topics do you find yourself reading about without being
+                asked?
+                <span
+                  class="help-icon"
+                  data-tip="This is different from what you think is useful. Pure curiosity is a signal."
+                  >?</span
+                >
+              </div>
+              <textarea
+                id="q_topics"
+                placeholder="Industries, subjects, technologies, philosophies..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What problem in the world genuinely bothers you and you wish
+                someone would fix?
+              </div>
+              <textarea id="q_problem" placeholder=""></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What industries or fields have you always been curious about but
+                never pursued?
+              </div>
+              <textarea id="q_industries" placeholder=""></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                If you had 6 months free with no financial pressure, what would
+                you spend it doing?
+              </div>
+              <textarea id="q_six_months" placeholder=""></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- S5: Values -->
+        <div class="section" id="s5">
+          <div class="section-header">
+            <span class="section-num">05</span>
+            <span class="section-title">Values & Priorities</span>
+            <span class="section-badge" id="badge-s5">0 / 4</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">
+                Rank these by importance to you (drag to reorder or select top
+                3):
+              </div>
+              <div class="checkbox-grid" id="values_grid"></div>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What would you never sacrifice, no matter the opportunity?
+              </div>
+              <textarea
+                id="q_never_sacrifice"
+                placeholder="Family time, creative freedom, integrity, health..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What do you currently prioritize that you secretly know doesn't
+                align with your values?
+              </div>
+              <textarea
+                id="q_misaligned"
+                placeholder="Be honest — this is private."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                How important is money to you — honestly, not what sounds good?
+                <span
+                  class="help-icon"
+                  data-tip="There's no wrong answer. High money-drive is a valid, useful input."
+                  >?</span
+                >
+              </div>
+              <div class="scale-group" id="scale_money"></div>
+              <div class="scale-labels">
+                <span>1 — I don't care about money</span
+                ><span>10 — It's my primary driver</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S6: Vision -->
+        <div class="section" id="s6">
+          <div class="section-header">
+            <span class="section-num">06</span>
+            <span class="section-title">Life Vision</span>
+            <span class="section-badge" id="badge-s6">0 / 5</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">
+                Describe your ideal life in 10 years — in vivid detail.
+                <span
+                  class="help-icon"
+                  data-tip="Day-to-day life. Not a highlight reel. Where are you, what do you do, who are you with?"
+                  >?</span
+                >
+              </div>
+              <textarea
+                id="q_vision_10y"
+                placeholder="Where do you wake up? What do you work on? How do you spend your time?"
+                style="min-height: 120px"
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What income level do you realistically want to reach?
+              </div>
+              <select id="q_income">
+                <option value="">Select...</option>
+                <option>Basic (cover needs + modest comfort)</option>
+                <option>Comfortable ($50k–100k/yr equivalent)</option>
+                <option>High income ($100k–500k/yr)</option>
+                <option>Wealthy ($500k+/yr)</option>
+                <option>Financial freedom / passive income focus</option>
+              </select>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What does success look like to you — not the world's definition,
+                yours?
+              </div>
+              <textarea id="q_success_def" placeholder=""></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What kind of work environment suits you?
+              </div>
+              <div class="checkbox-grid" id="workenv_grid"></div>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What legacy or impact do you want to leave?
+              </div>
+              <textarea
+                id="q_legacy"
+                placeholder="It's okay if this is small or personal. It doesn't have to be world-changing."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- S7: Identity -->
+        <div class="section" id="s7">
+          <div class="section-header">
+            <span class="section-num">07</span>
+            <span class="section-title">Identity & Self-Perception</span>
+            <span class="section-badge" id="badge-s7">0 / 5</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">
+                How do you describe yourself to others?
+                <span
+                  class="help-icon"
+                  data-tip="The labels you use reveal how you've boxed yourself in — or freed yourself."
+                  >?</span
+                >
+              </div>
+              <input
+                type="text"
+                id="q_self_desc"
+                placeholder="Your go-to identity statement..."
+              />
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What roles do you naturally take in groups or teams?
+              </div>
+              <div class="checkbox-grid" id="roles_grid"></div>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What do you believe about yourself that might be holding you
+                back?
+              </div>
+              <textarea
+                id="q_limiting_belief"
+                placeholder="'I'm not smart enough', 'I start things and never finish', 'I need more time'..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What do others consistently say about you — both positive and
+                negative?
+              </div>
+              <textarea id="q_others_say" placeholder=""></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                Where do you feel like a fraud or imposter?
+              </div>
+              <textarea
+                id="q_imposter"
+                placeholder="Contexts where you feel like you don't really belong or aren't as capable as people think..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- S8: Obstacles -->
+        <div class="section" id="s8">
+          <div class="section-header">
+            <span class="section-num">08</span>
+            <span class="section-title">Obstacles & Fears</span>
+            <span class="section-badge" id="badge-s8">0 / 5</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">What are you most afraid of?</div>
+              <textarea
+                id="q_fears"
+                placeholder="Failure, judgment, being wrong, loneliness, poverty..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                Describe a pattern of self-sabotage you recognize in yourself.
+                <span
+                  class="help-icon"
+                  data-tip="This is one of the most valuable questions. Don't skip it."
+                  >?</span
+                >
+              </div>
+              <textarea
+                id="q_sabotage"
+                placeholder="When do you give up? What excuses do you make? When do you undermine your own progress?"
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What constraints are genuinely real vs. perceived?
+                <span
+                  class="help-icon"
+                  data-tip="Many constraints are real. Some are excuses. Be honest about which is which."
+                  >?</span
+                >
+              </div>
+              <textarea
+                id="q_constraints"
+                placeholder="Financial, health, family, legal, geographic — what actually limits you?"
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What have you failed at that still affects your confidence?
+              </div>
+              <textarea id="q_past_failures" placeholder=""></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">What do you procrastinate on most?</div>
+              <div class="scale-group" id="scale_procras"></div>
+              <div class="scale-labels">
+                <span>1 — Rarely procrastinate</span
+                ><span>10 — Procrastinate almost everything</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S9: Decisions -->
+        <div class="section" id="s9">
+          <div class="section-header">
+            <span class="section-num">09</span>
+            <span class="section-title">Decision History</span>
+            <span class="section-badge" id="badge-s9">0 / 4</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">
+                What is the best decision you ever made?
+              </div>
+              <textarea
+                id="q_best_decision"
+                placeholder="What made it good? What did it cost? What did it teach you?"
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">What is the decision you most regret?</div>
+              <textarea id="q_worst_decision" placeholder=""></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                How do you typically make important decisions?
+              </div>
+              <div class="checkbox-grid" id="decision_grid"></div>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What decision have you been avoiding that you know you need to
+                make?
+              </div>
+              <textarea id="q_avoided_decision" placeholder=""></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- S10: Resources -->
+        <div class="section" id="s10">
+          <div class="section-header">
+            <span class="section-num">10</span>
+            <span class="section-title">Resources & Environment</span>
+            <span class="section-badge" id="badge-s10">0 / 4</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">
+                Who are the 5 people you spend the most time with?
+                <span
+                  class="help-icon"
+                  data-tip="Your social environment is one of the strongest predictors of where you end up."
+                  >?</span
+                >
+              </div>
+              <textarea
+                id="q_people"
+                placeholder="Describe them briefly — their mindsets, ambitions, influence on you..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                Do you have mentors, advisors, or people significantly ahead of
+                you that you can access?
+              </div>
+              <input
+                type="text"
+                id="q_mentors"
+                placeholder="Yes/no and brief description..."
+              />
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What assets or resources do you have that you might be
+                underusing?
+              </div>
+              <textarea
+                id="q_assets"
+                placeholder="Knowledge, tools, network connections, free time, platforms, credentials..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">What does your network look like?</div>
+              <select id="q_network">
+                <option value="">Select...</option>
+                <option>Very limited — mostly friends and family</option>
+                <option>Small but high-quality professional network</option>
+                <option>Broad but shallow network</option>
+                <option>Strong professional network in my field</option>
+                <option>Extensive cross-industry connections</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- S11: Risk & Experiments -->
+        <div class="section" id="s11">
+          <div class="section-header">
+            <span class="section-num">11</span>
+            <span class="section-title">Risk Tolerance & Experiments</span>
+            <span class="section-badge" id="badge-s11">0 / 5</span>
+            <span class="section-arrow">▾</span>
+          </div>
+          <div class="section-body">
+            <div class="q-group">
+              <div class="q-label">
+                How would you describe your risk tolerance?
+              </div>
+              <div class="scale-group" id="scale_risk"></div>
+              <div class="scale-labels">
+                <span>1 — Very conservative</span
+                ><span>10 — Love high-stakes bets</span>
+              </div>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What would you try if you knew you couldn't fail?
+              </div>
+              <textarea
+                id="q_no_fail"
+                placeholder="Don't filter this. What's the dream you're too scared to say out loud?"
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What projects or directions are you currently considering?
+              </div>
+              <textarea
+                id="q_projects"
+                placeholder="Ideas you've been thinking about, things you've started, paths you're exploring..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What experiments have you run in the past year?
+              </div>
+              <textarea
+                id="q_experiments"
+                placeholder="Side projects, new habits, career moves, businesses tried..."
+              ></textarea>
+            </div>
+            <div class="q-group">
+              <div class="q-label">
+                What is one thing you could start this week with zero extra
+                resources?
+              </div>
+              <input type="text" id="q_start_now" placeholder="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- EXPORT PANEL -->
+        <div class="export-panel" id="export">
+          <h2>Analyse with AI</h2>
+          <p>
+            Your answers are sent to <strong>Cloudflare Workers AI</strong>.
+            Analysis runs entirely in the cloud — no local setup required.
+          </p>
+          <div class="export-buttons">
+            <button class="btn btn-accent" id="btnGenerate">
+              ⚡ Analyse My Life
+            </button>
+            <button class="btn" id="btnDownload">
+              ↓ Download Answers (JSON)
+            </button>
+            <button class="btn" id="btnImport">↑ Import Answers (JSON)</button>
+            <button class="btn" id="btnSave">💾 Save Session</button>
+            <button class="btn" id="btnPrint">⎙ Print / PDF</button>
+          </div>
+          <input
+            type="file"
+            id="importFileInput"
+            accept=".json"
+            style="display: none"
+          />
+          <div
+            id="importStatus"
+            style="
+              font-size: 12px;
+              margin-top: 10px;
+              color: var(--text-dim);
+              font-family: &quot;IBM Plex Mono&quot;, monospace;
+            "
+          ></div>
+        </div>
+
+        <!-- AI RESULT PANEL -->
+        <div class="ai-panel" id="aiPanel">
+          <div class="ai-panel-header">
+            <h3>Your Life Analysis</h3>
+            <div class="ai-export-btns">
+              <button class="btn" id="btnExportPDF">⎙ Export PDF</button>
+              <button class="btn" id="btnExportTxtFormatted">
+                ↓ Export Text (Formatted)
+              </button>
+              <button class="btn" id="btnExportTxtPlain">
+                ↓ Export Text (Plain)
+              </button>
+            </div>
+          </div>
+          <div id="aiContent" class="ai-content"></div>
+        </div>
+
+        <div class="kbd-hint">
+          <span><kbd>Tab</kbd> next field</span>
+          <span><kbd>Ctrl+S</kbd> save session</span>
+          <span><kbd>Ctrl+A</kbd> analyse with AI</span>
+          <span><kbd>Ctrl+D</kbd> download JSON</span>
+          <span><kbd>Ctrl+I</kbd> import JSON</span>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      // ═══════════════════════════════════════════════
+      // DATA DEFINITIONS
+      // ═══════════════════════════════════════════════
+
+      const SKILL_OPTIONS = [
+        "Writing / Storytelling",
+        "Public Speaking",
+        "Data Analysis",
+        "Programming / Dev",
+        "Design / Visual",
+        "Sales / Persuasion",
+        "Research",
+        "Teaching / Coaching",
+        "Problem Solving",
+        "Strategic Thinking",
+        "Negotiation",
+        "Project Management",
+        "Creative Thinking",
+        "Leadership",
+        "Empathy / People Reading",
+        "Math / Logic",
+      ];
+      const LEARNING_STYLES = [
+        "Reading books",
+        "Video / visual",
+        "Doing / building",
+        "Mentorship / shadowing",
+        "Courses / structured",
+        "Discussion / debate",
+        "Experimenting alone",
+        "Writing / notes",
+      ];
+      const VALUE_OPTIONS = [
+        "Freedom",
+        "Financial security",
+        "Creative expression",
+        "Status / recognition",
+        "Family",
+        "Impact / meaning",
+        "Adventure",
+        "Learning",
+        "Independence",
+        "Stability",
+        "Power",
+        "Community",
+      ];
+      const WORK_ENV_OPTIONS = [
+        "Fully remote",
+        "In-office / team",
+        "Hybrid",
+        "Solo / independent",
+        "Fast-paced startup",
+        "Stable institution",
+        "My own business",
+        "Travelling / nomadic",
+      ];
+      const ROLE_OPTIONS = [
+        "Leader / organizer",
+        "Executor / operator",
+        "Strategist / planner",
+        "Creative / ideas generator",
+        "Mediator / connector",
+        "Critic / analyst",
+        "Supporter / helper",
+        "Rebel / challenger",
+      ];
+      const DECISION_STYLES = [
+        "Gut feeling / intuition",
+        "Data and research",
+        "Advice from trusted people",
+        "Pros/cons analysis",
+        "I delay until forced",
+        "Emotional state drives it",
+      ];
+
+      // ═══════════════════════════════════════════════
+      // INIT CHECKBOXES & SCALES
+      // ═══════════════════════════════════════════════
+
+      function buildCheckboxGrid(id, options) {
+        const container = document.getElementById(id);
+        if (!container) return;
+        options.forEach((opt) => {
+          const label = document.createElement("label");
+          label.className = "checkbox-item";
+          label.innerHTML = `<div class="checkbox-box">✓</div><span>${opt}</span>`;
+          label.dataset.value = opt;
+          label.addEventListener("click", function (e) {
+            e.preventDefault();
+            this.classList.toggle("checked");
+            handleInput();
+          });
+          container.appendChild(label);
+        });
+      }
+
+      function buildScale(id, min = 1, max = 10) {
+        const container = document.getElementById(id);
+        if (!container) return;
+        for (let i = min; i <= max; i++) {
+          const btn = document.createElement("button");
+          btn.className = "scale-btn";
+          btn.textContent = i;
+          btn.dataset.val = i;
+          btn.addEventListener("click", function () {
+            container
+              .querySelectorAll(".scale-btn")
+              .forEach((b) => b.classList.remove("selected"));
+            this.classList.add("selected");
+            handleInput();
+          });
+          container.appendChild(btn);
+        }
+      }
+
+      function initUI() {
+        buildCheckboxGrid("skills_grid", SKILL_OPTIONS);
+        buildCheckboxGrid("learning_grid", LEARNING_STYLES);
+        buildCheckboxGrid("values_grid", VALUE_OPTIONS);
+        buildCheckboxGrid("workenv_grid", WORK_ENV_OPTIONS);
+        buildCheckboxGrid("roles_grid", ROLE_OPTIONS);
+        buildCheckboxGrid("decision_grid", DECISION_STYLES);
+        buildScale("scale_satisfaction");
+        buildScale("scale_attention");
+        buildScale("scale_money");
+        buildScale("scale_procras");
+        buildScale("scale_risk");
+      }
+
+      // ═══════════════════════════════════════════════
+      // SECTION TOGGLE
+      // ═══════════════════════════════════════════════
+
+      function toggleSection(header) {
+        header.classList.toggle("open");
+        const body = header.nextElementSibling;
+        body.classList.toggle("open");
+      }
+
+      // ═══════════════════════════════════════════════
+      // DATA COLLECTION
+      // ═══════════════════════════════════════════════
+
+      function collectAnswers() {
+        const get = (id) => {
+          const el = document.getElementById(id);
+          return el ? el.value.trim() : "";
+        };
+        const getScale = (id) => {
+          const sel = document.querySelector(`#${id} .scale-btn.selected`);
+          return sel ? sel.dataset.val : "";
+        };
+        const getChecked = (id) => {
+          return Array.from(
+            document.querySelectorAll(`#${id} .checkbox-item.checked`),
+          ).map((el) => el.dataset.value);
+        };
+
+        return {
+          location: get("q_location"),
+          work: get("q_work"),
+          finance: get("q_finance"),
+          routine: get("q_routine"),
+          education: get("q_education"),
+          satisfaction: getScale("scale_satisfaction"),
+          wish_different: get("q_wish_different"),
+          flow: get("q_flow"),
+          drain: get("q_drain"),
+          peak_time: get("q_peak_time"),
+          attention: getScale("scale_attention"),
+          distractions: get("q_distractions"),
+          strengths_real: get("q_strengths_real"),
+          skills: getChecked("skills_grid"),
+          top_skill: get("q_top_skill"),
+          wish_skill: get("q_wish_skill"),
+          learning_styles: getChecked("learning_grid"),
+          building: get("q_building"),
+          topics: get("q_topics"),
+          problem: get("q_problem"),
+          industries: get("q_industries"),
+          six_months: get("q_six_months"),
+          values: getChecked("values_grid"),
+          never_sacrifice: get("q_never_sacrifice"),
+          misaligned: get("q_misaligned"),
+          money_drive: getScale("scale_money"),
+          vision_10y: get("q_vision_10y"),
+          income: get("q_income"),
+          success_def: get("q_success_def"),
+          work_env: getChecked("workenv_grid"),
+          legacy: get("q_legacy"),
+          self_desc: get("q_self_desc"),
+          roles: getChecked("roles_grid"),
+          limiting_belief: get("q_limiting_belief"),
+          others_say: get("q_others_say"),
+          imposter: get("q_imposter"),
+          fears: get("q_fears"),
+          sabotage: get("q_sabotage"),
+          constraints: get("q_constraints"),
+          past_failures: get("q_past_failures"),
+          procras: getScale("scale_procras"),
+          best_decision: get("q_best_decision"),
+          worst_decision: get("q_worst_decision"),
+          decision_style: getChecked("decision_grid"),
+          avoided_decision: get("q_avoided_decision"),
+          people: get("q_people"),
+          mentors: get("q_mentors"),
+          assets: get("q_assets"),
+          network: get("q_network"),
+          risk: getScale("scale_risk"),
+          no_fail: get("q_no_fail"),
+          projects: get("q_projects"),
+          experiments: get("q_experiments"),
+          start_now: get("q_start_now"),
+        };
+      }
+
+      // ═══════════════════════════════════════════════
+      // PROGRESS & SCORES
+      // ═══════════════════════════════════════════════
+
+      const SECTION_FIELDS = {
+        s1: [
+          "q_location",
+          "q_work",
+          "q_finance",
+          "q_routine",
+          "q_education",
+          "scale_satisfaction",
+          "q_wish_different",
+        ],
+        s2: [
+          "q_flow",
+          "q_drain",
+          "q_peak_time",
+          "scale_attention",
+          "q_distractions",
+        ],
+        s3: [
+          "q_strengths_real",
+          "skills_grid",
+          "q_top_skill",
+          "q_wish_skill",
+          "learning_grid",
+          "q_building",
+        ],
+        s4: ["q_topics", "q_problem", "q_industries", "q_six_months"],
+        s5: ["values_grid", "q_never_sacrifice", "q_misaligned", "scale_money"],
+        s6: [
+          "q_vision_10y",
+          "q_income",
+          "q_success_def",
+          "workenv_grid",
+          "q_legacy",
+        ],
+        s7: [
+          "q_self_desc",
+          "roles_grid",
+          "q_limiting_belief",
+          "q_others_say",
+          "q_imposter",
+        ],
+        s8: [
+          "q_fears",
+          "q_sabotage",
+          "q_constraints",
+          "q_past_failures",
+          "scale_procras",
+        ],
+        s9: [
+          "q_best_decision",
+          "q_worst_decision",
+          "decision_grid",
+          "q_avoided_decision",
+        ],
+        s10: ["q_people", "q_mentors", "q_assets", "q_network"],
+        s11: [
+          "scale_risk",
+          "q_no_fail",
+          "q_projects",
+          "q_experiments",
+          "q_start_now",
+        ],
+      };
+
+      function fieldFilled(id) {
+        if (id.startsWith("scale_"))
+          return !!document.querySelector(`#${id} .scale-btn.selected`);
+        if (id.endsWith("_grid"))
+          return (
+            document.querySelectorAll(`#${id} .checkbox-item.checked`).length >
+            0
+          );
+        const el = document.getElementById(id);
+        return el && el.value.trim().length > 2;
+      }
+
+      function updateProgress() {
+        let totalFields = 0,
+          filledFields = 0;
+        Object.entries(SECTION_FIELDS).forEach(([secId, fields]) => {
+          const filled = fields.filter((f) => fieldFilled(f)).length;
+          const total = fields.length;
+          totalFields += total;
+          filledFields += filled;
+          const badge = document.getElementById("badge-" + secId);
+          if (badge) {
+            badge.textContent = `${filled} / ${total}`;
+            badge.className =
+              "section-badge" + (filled === total ? " done" : "");
+          }
+          const sideItem = document.querySelector(
+            `.sidebar-item[data-section="${secId.replace("s", "")}"]`,
+          );
+          if (sideItem) {
+            sideItem.classList.remove("done", "partial");
+            if (filled === total) sideItem.classList.add("done");
+            else if (filled > 0) sideItem.classList.add("partial");
+          }
+        });
+
+        const pct = Math.round((filledFields / totalFields) * 100);
+        document.getElementById("progressLabel").textContent = pct + "%";
+        document.getElementById("scoreCompletion").textContent = pct + "%";
+
+        const circumference = 88;
+        const offset = circumference - (pct / 100) * circumference;
+        document.getElementById("progressRing").style.strokeDashoffset = offset;
+
+        // Focus score: based on attention scale
+        const attnSel = document.querySelector(
+          "#scale_attention .scale-btn.selected",
+        );
+        const distractTxt = document.getElementById("q_distractions");
+        if (attnSel) {
+          const attnVal = parseInt(attnSel.dataset.val);
+          const distractLen = distractTxt ? distractTxt.value.length : 0;
+          const penalty = distractLen > 100 ? 1 : 0;
+          const focusScore = Math.max(1, attnVal - penalty);
+          const labels = [
+            "",
+            "F",
+            "F",
+            "F-",
+            "D",
+            "C",
+            "C+",
+            "B",
+            "B+",
+            "A",
+            "A+",
+          ];
+          document.getElementById("scoreFocus").textContent =
+            labels[focusScore] || focusScore;
+        }
+
+        // Procrastination risk
+        const procrasSel = document.querySelector(
+          "#scale_procras .scale-btn.selected",
+        );
+        if (procrasSel) {
+          const val = parseInt(procrasSel.dataset.val);
+          const level =
+            val <= 3
+              ? "Low"
+              : val <= 6
+                ? "Med"
+                : val <= 8
+                  ? "High"
+                  : "Very High";
+          document.getElementById("scoreProcras").textContent = level;
+        }
+
+        updateRadar();
+      }
+
+      // ═══════════════════════════════════════════════
+      // RADAR CHART
+      // ═══════════════════════════════════════════════
+
+      function updateRadar() {
+        const canvas = document.getElementById("radarChart");
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width,
+          H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        const isDark =
+          document.documentElement.getAttribute("data-theme") !== "light";
+        const accent = isDark ? "#c8a96e" : "#8a6a2e";
+        const accent2 = isDark ? "#7c9ccc" : "#3a5c8c";
+        const gridColor = isDark
+          ? "rgba(255,255,255,0.07)"
+          : "rgba(0,0,0,0.07)";
+        const textColor = isDark ? "#7a7a8a" : "#8a8880";
+
+        const labels = [
+          "Skills",
+          "Focus",
+          "Vision",
+          "Values clarity",
+          "Self-awareness",
+          "Risk appetite",
+        ];
+        const cx = W / 2,
+          cy = H / 2 + 10,
+          r = Math.min(W, H) / 2 - 40;
+        const n = labels.length;
+
+        // Get values 0–10
+        const skillCount = document.querySelectorAll(
+          "#skills_grid .checkbox-item.checked",
+        ).length;
+        const skillScore = Math.min(
+          10,
+          (skillCount / SKILL_OPTIONS.length) * 10 + 2,
+        );
+
+        const attnSel = document.querySelector(
+          "#scale_attention .scale-btn.selected",
+        );
+        const focusScore = attnSel ? parseInt(attnSel.dataset.val) : 0;
+
+        const visionFilled = [
+          "q_vision_10y",
+          "q_income",
+          "q_success_def",
+        ].filter((f) => fieldFilled(f)).length;
+        const visionScore = (visionFilled / 3) * 10;
+
+        const valCount = document.querySelectorAll(
+          "#values_grid .checkbox-item.checked",
+        ).length;
+        const valScore = Math.min(10, valCount * 1.2);
+
+        const selfFilled = [
+          "q_self_desc",
+          "q_limiting_belief",
+          "q_others_say",
+          "q_imposter",
+        ].filter((f) => fieldFilled(f)).length;
+        const selfScore = (selfFilled / 4) * 10;
+
+        const riskSel = document.querySelector(
+          "#scale_risk .scale-btn.selected",
+        );
+        const riskScore = riskSel ? parseInt(riskSel.dataset.val) : 0;
+
+        const values = [
+          skillScore,
+          focusScore,
+          visionScore,
+          valScore,
+          selfScore,
+          riskScore,
+        ];
+
+        // Draw grid
+        for (let ring = 1; ring <= 5; ring++) {
+          const rr = (ring / 5) * r;
+          ctx.beginPath();
+          for (let i = 0; i < n; i++) {
+            const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+            const x = cx + Math.cos(angle) * rr;
+            const y = cy + Math.sin(angle) * rr;
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.strokeStyle = gridColor;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        // Draw axes
+        for (let i = 0; i < n; i++) {
+          const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+          ctx.strokeStyle = gridColor;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        // Draw data polygon
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) {
+          const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+          const rr = (values[i] / 10) * r;
+          const x = cx + Math.cos(angle) * rr;
+          const y = cy + Math.sin(angle) * rr;
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = isDark
+          ? "rgba(200,169,110,0.15)"
+          : "rgba(138,106,46,0.12)";
+        ctx.fill();
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Dots
+        for (let i = 0; i < n; i++) {
+          const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+          const rr = (values[i] / 10) * r;
+          const x = cx + Math.cos(angle) * rr;
+          const y = cy + Math.sin(angle) * rr;
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.fillStyle = accent;
+          ctx.fill();
+        }
+
+        // Labels
+        ctx.font = "12px DM Sans, sans-serif";
+        ctx.fillStyle = textColor;
+        ctx.textAlign = "center";
+        for (let i = 0; i < n; i++) {
+          const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+          const lr = r + 22;
+          const x = cx + Math.cos(angle) * lr;
+          const y = cy + Math.sin(angle) * lr + 4;
+          ctx.fillText(labels[i], x, y);
+        }
+      }
+
+      // ═══════════════════════════════════════════════
+      // AUTO-SAVE
+      // ═══════════════════════════════════════════════
+
+      let saveTimeout;
+      let radarTimeout;
+      function scheduleRadarUpdate() {
+        clearTimeout(radarTimeout);
+        radarTimeout = setTimeout(updateRadar, 150);
+      }
+      function handleInput() {
+        updateProgress();
+        clearTimeout(saveTimeout);
+        const dot = document.getElementById("autosaveDot");
+        const lbl = document.getElementById("autosaveLabel");
+        dot.className = "autosave-dot saving";
+        lbl.textContent = "saving...";
+        saveTimeout = setTimeout(() => {
+          saveToLocal();
+          dot.className = "autosave-dot saved";
+          lbl.textContent = "saved";
+          setTimeout(() => {
+            dot.className = "autosave-dot";
+            lbl.textContent = "auto-save";
+          }, 2000);
+        }, 800);
+      }
+
+      function saveToLocal() {
+        try {
+          localStorage.setItem("dla_answers", JSON.stringify(collectAnswers()));
+        } catch (e) {
+          console.error("[Auto-save] Failed to save to localStorage:", e.message);
+        }
+      }
+
+      function loadFromLocal() {
+        try {
+          const raw = localStorage.getItem("dla_answers");
+          if (!raw) return;
+          const data = JSON.parse(raw);
+          const set = (id, val) => {
+            const el = document.getElementById(id);
+            if (el && val) el.value = val;
+          };
+          const setScale = (id, val) => {
+            if (!val) return;
+            const btn = document.querySelector(
+              `#${id} .scale-btn[data-val="${val}"]`,
+            );
+            if (btn) btn.classList.add("selected");
+          };
+          const setChecked = (id, vals) => {
+            if (!vals || !vals.length) return;
+            document.querySelectorAll(`#${id} .checkbox-item`).forEach((el) => {
+              if (vals.includes(el.dataset.value)) el.classList.add("checked");
+            });
+          };
+
+          set("q_location", data.location);
+          set("q_work", data.work);
+          set("q_finance", data.finance);
+          set("q_routine", data.routine);
+          set("q_education", data.education);
+          setScale("scale_satisfaction", data.satisfaction);
+          set("q_wish_different", data.wish_different);
+          set("q_flow", data.flow);
+          set("q_drain", data.drain);
+          set("q_peak_time", data.peak_time);
+          setScale("scale_attention", data.attention);
+          set("q_distractions", data.distractions);
+          set("q_strengths_real", data.strengths_real);
+          setChecked("skills_grid", data.skills);
+          set("q_top_skill", data.top_skill);
+          set("q_wish_skill", data.wish_skill);
+          setChecked("learning_grid", data.learning_styles);
+          set("q_building", data.building);
+          set("q_topics", data.topics);
+          set("q_problem", data.problem);
+          set("q_industries", data.industries);
+          set("q_six_months", data.six_months);
+          setChecked("values_grid", data.values);
+          set("q_never_sacrifice", data.never_sacrifice);
+          set("q_misaligned", data.misaligned);
+          setScale("scale_money", data.money_drive);
+          set("q_vision_10y", data.vision_10y);
+          set("q_income", data.income);
+          set("q_success_def", data.success_def);
+          setChecked("workenv_grid", data.work_env);
+          set("q_legacy", data.legacy);
+          set("q_self_desc", data.self_desc);
+          setChecked("roles_grid", data.roles);
+          set("q_limiting_belief", data.limiting_belief);
+          set("q_others_say", data.others_say);
+          set("q_imposter", data.imposter);
+          set("q_fears", data.fears);
+          set("q_sabotage", data.sabotage);
+          set("q_constraints", data.constraints);
+          set("q_past_failures", data.past_failures);
+          setScale("scale_procras", data.procras);
+          set("q_best_decision", data.best_decision);
+          set("q_worst_decision", data.worst_decision);
+          setChecked("decision_grid", data.decision_style);
+          set("q_avoided_decision", data.avoided_decision);
+          set("q_people", data.people);
+          set("q_mentors", data.mentors);
+          set("q_assets", data.assets);
+          set("q_network", data.network);
+          setScale("scale_risk", data.risk);
+          set("q_no_fail", data.no_fail);
+          set("q_projects", data.projects);
+          set("q_experiments", data.experiments);
+          set("q_start_now", data.start_now);
+          updateProgress();
+        } catch (e) {
+          console.error("[Auto-load] Failed to load from localStorage:", e.message);
+        }
+      }
+
+      // ═══════════════════════════════════════════════
+      // PROMPT GENERATION
+      // ═══════════════════════════════════════════════
+
+      // ── AI CONFIG ──────────────────────────────────────
+      // Set your Cloudflare Worker URL here.
+      // Deploy ai-worker.js as a Cloudflare Worker and paste the URL below.
+      // Example: https://deep-life-ai.your-subdomain.workers.dev/ai
+      const AI_ENDPOINT = "https://YOUR-WORKER-URL.workers.dev/ai";
+      const AI_MODEL = "@cf/meta/llama-3.1-8b-instruct";
+
+      // ── PROMPT GENERATION ───────────────────────────────
+      function generatePrompt() {
+        const d = collectAnswers();
+        const line = (label, val) =>
+          val ? `\n${label}: ${Array.isArray(val) ? val.join(", ") : val}` : "";
+        const answersBlock = `
+=== SUBJECT PROFILE ===
+${line("Location", d.location)}
+${line("Work & Income", d.work)}
+${line("Financial Situation", d.finance)}
+${line("Daily Routine", d.routine)}
+${line("Education", d.education)}
+${line("Life Satisfaction (1-10)", d.satisfaction)}
+${line("Wishes Were Different", d.wish_different)}
+
+=== ENERGY & FOCUS ===
+${line("Flow Activities", d.flow)}
+${line("Draining Activities", d.drain)}
+${line("Peak Performance Time", d.peak_time)}
+${line("Attention Span (1-10)", d.attention)}
+${line("Main Distractions", d.distractions)}
+
+=== SKILLS & ABILITIES ===
+${line("Genuine Strengths", d.strengths_real)}
+${line("Skill Areas", d.skills)}
+${line("Most Developed Skill", d.top_skill)}
+${line("Wished Learned Earlier", d.wish_skill)}
+${line("Learning Style", d.learning_styles)}
+${line("Currently Building", d.building)}
+
+=== INTERESTS & CURIOSITIES ===
+${line("Reads About Without Being Asked", d.topics)}
+${line("Problem They Wish Was Solved", d.problem)}
+${line("Unexplored Industries", d.industries)}
+${line("If Had 6 Free Months", d.six_months)}
+
+=== VALUES ===
+${line("Core Values", d.values)}
+${line("Would Never Sacrifice", d.never_sacrifice)}
+${line("Currently Misaligned", d.misaligned)}
+${line("Money Drive (1-10)", d.money_drive)}
+
+=== LIFE VISION ===
+${line("10-Year Vision", d.vision_10y)}
+${line("Income Goal", d.income)}
+${line("Personal Definition of Success", d.success_def)}
+${line("Preferred Work Environment", d.work_env)}
+${line("Legacy / Impact Goal", d.legacy)}
+
+=== IDENTITY ===
+${line("Self-Description", d.self_desc)}
+${line("Natural Roles", d.roles)}
+${line("Limiting Beliefs", d.limiting_belief)}
+${line("How Others Describe Them", d.others_say)}
+${line("Imposter Areas", d.imposter)}
+
+=== OBSTACLES & FEARS ===
+${line("Core Fears", d.fears)}
+${line("Self-Sabotage Patterns", d.sabotage)}
+${line("Real Constraints", d.constraints)}
+${line("Past Failures", d.past_failures)}
+${line("Procrastination Level (1-10)", d.procras)}
+
+=== DECISION HISTORY ===
+${line("Best Decision", d.best_decision)}
+${line("Most Regretted Decision", d.worst_decision)}
+${line("Decision Style", d.decision_style)}
+${line("Avoided Decision", d.avoided_decision)}
+
+=== RESOURCES & ENVIRONMENT ===
+${line("5 Closest People", d.people)}
+${line("Mentors / Advisors", d.mentors)}
+${line("Underused Assets", d.assets)}
+${line("Network Quality", d.network)}
+
+=== RISK & EXPERIMENTS ===
+${line("Risk Tolerance (1-10)", d.risk)}
+${line("Would Try If Couldnt Fail", d.no_fail)}
+${line("Current Projects", d.projects)}
+${line("Recent Experiments", d.experiments)}
+${line("Could Start This Week", d.start_now)}
+`.trim();
+
+        const prompt = `You are a world-class advisor combining the depth of a clinical psychologist, the precision of a behavioral scientist, the strategic vision of a top-tier executive coach, and the directness of a brutally honest mentor. You do not give generic life coaching advice. You give real, specific, actionable analysis.
+
+Below is a detailed self-profile from a person seeking deep life direction analysis. Read it carefully and produce a comprehensive, honest, strategic analysis.
+
+${answersBlock}
+
+---
+
+ANALYSIS INSTRUCTIONS:
+Think using systems thinking, psychological pattern recognition, career strategy, behavioral economics, and long-term life architecture. Everything must connect directly to the specific details in the profile above. Do NOT give generic advice.
+
+Produce a structured analysis with these exact sections. Use ## for section headers:
+
+## 1. CORE PERSONALITY PROFILE
+Identify the person's core psychological type, dominant cognitive style, and emotional operating system. What drives them at a deep level? Be specific.
+
+## 2. HIDDEN STRENGTHS
+What abilities or traits in their profile are underused or unrecognized? Look for signals they haven't named explicitly.
+
+## 3. MAJOR WEAKNESSES & BLIND SPOTS
+What patterns suggest predictable failure? What cognitive biases are likely operating? Be direct.
+
+## 4. PROCRASTINATION & DISCIPLINE ANALYSIS
+Why do they procrastinate? What are the specific triggers? What behavioral interventions will work for THIS person?
+
+## 5. LIFE DIRECTION POSSIBILITIES
+List 3–5 realistic life/career paths that fit their abilities, values, and personality. For each: explain WHY it fits and what the main challenge would be.
+
+## 6. STRATEGIC POSITIONING
+Where should this person position themselves in the next 2–5 years to maximize leverage? What is their most defensible competitive edge?
+
+## 7. OVERLOOKED OPPORTUNITIES
+What niches or paths do they seem to be ignoring? What are they potentially sitting on without realizing?
+
+## 8. LIKELY MISTAKES TO AVOID
+The 3–5 most predictable mistakes they will make based on their profile patterns.
+
+## 9. SKILL INVESTMENT STRATEGY
+3 core skills they must develop. 2 rare & valuable skill combinations that would set them apart. What to stop spending time on.
+
+## 10. PERSONAL DISCIPLINE SYSTEM
+A realistic discipline framework for THIS specific person — given their energy patterns, procrastination triggers, and learning style.
+
+## 11. DECISION FRAMEWORK
+A 3–5 question filter they can use when making major decisions, given their values, risk tolerance, and psychology.
+
+## 12. LONG-TERM LIFE ARCHITECTURE
+- **Next 3 months**: The single most important action.
+- **Next 2 years**: What must be built, tested, or positioned.
+- **Next 10 years**: What the ideal life looks like if they execute well.
+
+---
+TONE: Direct, honest, analytical, constructive. Reference their actual answers throughout. No motivational platitudes. No vague hedging.`;
+
+        const panel = document.getElementById("aiPanel");
+        const content = document.getElementById("aiContent");
+
+        window._lastAnalysisText = "";
+        panel.classList.add("visible");
+        content.innerHTML =
+          '<div class="ai-streaming"><div class="ai-spinner"></div><span>Sending to Cloudflare Workers AI — streaming response...</span><button class="btn" id="btnCancelAI" style="margin-top:12px">✕ Cancel</button></div>';
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        let cancelled = false;
+        const abortCtrl = new AbortController();
+
+        document.getElementById("btnCancelAI").addEventListener("click", function () {
+          cancelled = true;
+          abortCtrl.abort();
+          content.innerHTML =
+            '<div class="ai-streaming"><span style="color:var(--text-muted)">Cancelled.</span></div>';
+        });
+
+        fetch(AI_ENDPOINT, {
+          method: "POST",
+          signal: abortCtrl.signal,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: prompt, model: AI_MODEL }),
+        })
+          .then(function (res) {
+            if (!res.ok) {
+              throw new Error(
+                "AI returned HTTP " + res.status + ". Check your Worker is deployed and the AI binding is configured.",
+              );
+            }
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            let fullText = "";
+
+            content.innerHTML =
+              '<div id="aiStream" style="white-space:pre-wrap;font-family:\'DM Sans\',sans-serif;font-size:14px;line-height:1.8;color:var(--text);padding:1.75rem 2rem;min-height:200px;"></div>';
+            const streamEl = document.getElementById("aiStream");
+
+            function readChunk() {
+              reader.read().then(function (result) {
+                if (cancelled) return;
+
+                if (!result.done) {
+                  const raw = decoder.decode(result.value, { stream: true });
+                  raw.split("\n").forEach(function (line) {
+                    if (!line.trim()) return;
+                    if (line.startsWith("data:")) {
+                      try {
+                        const jsonStr = line.slice(5).trim();
+                        if (jsonStr === "[DONE]") return;
+                        const obj = JSON.parse(jsonStr);
+                        if (obj.response) {
+                          fullText += obj.response;
+                          streamEl.textContent = fullText;
+                        }
+                      } catch (e) {
+                        // partial SSE line — skip
+                      }
+                    }
+                  });
+                  readChunk();
+                } else {
+                  if (fullText && !window._lastAnalysisText) {
+                    window._lastAnalysisText = fullText;
+                    content.innerHTML = markdownToHTML(fullText);
+                    content.style.padding = "1.75rem 2rem";
+                    showToast("Analysis complete ✓");
+                  }
+                }
+              }).catch(function (err) {
+                if (cancelled) return;
+                content.innerHTML =
+                  '<div class="ai-streaming"><span style="color:var(--danger)">⚠ Stream interrupted: ' +
+                  err.message + "</span></div>";
+              });
+            }
+            readChunk();
+          })
+          .catch(function (err) {
+            if (cancelled) return;
+            content.innerHTML =
+              '<div class="ai-streaming"><span style="color:var(--danger)">⚠ Could not connect to AI Worker.<br><br>' +
+              "Check:<br>1. Worker is deployed at <code>" + AI_ENDPOINT + "</code><br>" +
+              '2. Workers AI binding "AI" is added to the Worker<br>' +
+              '3. Model is available in your Cloudflare account</span></div>';
+            console.error("AI Worker error:", err);
+          });
+      }
+
+      // ── MARKDOWN → HTML (lightweight) ──
+      function markdownToHTML(md) {
+        if (!md) return "";
+
+        // Process line by line to avoid escaping our own tags
+        const lines = md.split("\n");
+        let html = "";
+        let inUl = false;
+
+        function escapeText(t) {
+          return t
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+        function inlineFormat(t) {
+          return escapeText(t)
+            .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+            .replace(/\*(.+?)\*/g, "<em>$1</em>")
+            .replace(
+              /`(.+?)`/g,
+              '<code style="font-family:IBM Plex Mono,monospace;font-size:0.9em;background:var(--surface2);padding:1px 5px;border-radius:3px;">$1</code>',
+            );
+        }
+
+        lines.forEach(function (line) {
+          // Close list if needed
+          if (inUl && !line.match(/^[-*] /)) {
+            html += "</ul>";
+            inUl = false;
+          }
+
+          if (line.match(/^## /)) {
+            html += "<h2>" + inlineFormat(line.replace(/^## /, "")) + "</h2>";
+          } else if (line.match(/^### /)) {
+            html +=
+              '<h3 style="font-weight:600;margin:1.2rem 0 0.4rem;color:var(--accent2)">' +
+              inlineFormat(line.replace(/^### /, "")) +
+              "</h3>";
+          } else if (line.match(/^[-*] /)) {
+            if (!inUl) {
+              html += "<ul>";
+              inUl = true;
+            }
+            html += "<li>" + inlineFormat(line.replace(/^[-*] /, "")) + "</li>";
+          } else if (line.match(/^\d+\. /)) {
+            html +=
+              '<p style="margin:0.3rem 0"><strong>' +
+              inlineFormat(line) +
+              "</strong></p>";
+          } else if (line.trim() === "" || line.trim() === "---") {
+            html += '<div style="height:0.6rem"></div>';
+          } else {
+            html += "<p>" + inlineFormat(line) + "</p>";
+          }
+        });
+
+        if (inUl) html += "</ul>";
+        return html;
+      }
+
+      // ── PLAIN TEXT (strip markdown) ──
+      function analysisToPlainText(md) {
+        return md
+          .replace(/^## /gm, "\n\n━━━ ")
+          .replace(/^### /gm, "\n▸ ")
+          .replace(/\*\*(.+?)\*\*/g, "$1")
+          .replace(/\*(.+?)\*/g, "$1")
+          .replace(/^- /gm, "  • ")
+          .trim();
+      }
+
+      // ── EXPORTS ──
+      function exportPDF() {
+        if (!window._lastAnalysisText) {
+          showToast("Run analysis first");
+          return;
+        }
+        const orig = document.title;
+        document.title = "Kyth";
+        // Temporarily show only the AI panel for print
+        document
+          .querySelectorAll(
+            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint",
+          )
+          .forEach((el) => (el.style.display = "none"));
+        window.print();
+        document
+          .querySelectorAll(
+            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint",
+          )
+          .forEach((el) => (el.style.display = ""));
+        document.title = orig;
+      }
+
+      function exportTxtFormatted() {
+        if (!window._lastAnalysisText) {
+          showToast("Run analysis first");
+          return;
+        }
+        const header = `DEEP LIFE DIRECTION ANALYSIS\nGenerated: ${new Date().toLocaleString()}\n${"═".repeat(60)}\n\n`;
+        const body = analysisToPlainText(window._lastAnalysisText);
+        const footer = `\n\n${"═".repeat(60)}\nGenerated by Kyth Tool`;
+        downloadText(header + body + footer, "life-analysis-formatted.txt");
+      }
+
+      function exportTxtPlain() {
+        if (!window._lastAnalysisText) {
+          showToast("Run analysis first");
+          return;
+        }
+        const plain = window._lastAnalysisText
+          .replace(/^##+ /gm, "")
+          .replace(/\*\*(.+?)\*\*/g, "$1")
+          .replace(/\*(.+?)\*/g, "$1")
+          .replace(/^- /gm, "• ")
+          .trim();
+        downloadText(plain, "life-analysis-plain.txt");
+      }
+
+      function downloadText(text, filename) {
+        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("Downloaded ✓");
+      }
+
+      function importJSON(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const data = JSON.parse(e.target.result);
+            // Restore all fields using the same logic as loadFromLocal
+            const set = (id, val) => {
+              const el = document.getElementById(id);
+              if (el && val !== undefined && val !== null) el.value = val;
+            };
+            const setScale = (id, val) => {
+              if (!val) return;
+              const btn = document.querySelector(
+                `#${id} .scale-btn[data-val="${val}"]`,
+              );
+              if (btn) {
+                document
+                  .querySelectorAll(`#${id} .scale-btn`)
+                  .forEach((b) => b.classList.remove("selected"));
+                btn.classList.add("selected");
+              }
+            };
+            const setChecked = (id, vals) => {
+              if (!vals || !vals.length) return;
+              document
+                .querySelectorAll(`#${id} .checkbox-item`)
+                .forEach((el) => {
+                  el.classList.toggle(
+                    "checked",
+                    vals.includes(el.dataset.value),
+                  );
+                });
+            };
+
+            set("q_location", data.location);
+            set("q_work", data.work);
+            set("q_finance", data.finance);
+            set("q_routine", data.routine);
+            set("q_education", data.education);
+            setScale("scale_satisfaction", data.satisfaction);
+            set("q_wish_different", data.wish_different);
+            set("q_flow", data.flow);
+            set("q_drain", data.drain);
+            set("q_peak_time", data.peak_time);
+            setScale("scale_attention", data.attention);
+            set("q_distractions", data.distractions);
+            set("q_strengths_real", data.strengths_real);
+            setChecked("skills_grid", data.skills);
+            set("q_top_skill", data.top_skill);
+            set("q_wish_skill", data.wish_skill);
+            setChecked("learning_grid", data.learning_styles);
+            set("q_building", data.building);
+            set("q_topics", data.topics);
+            set("q_problem", data.problem);
+            set("q_industries", data.industries);
+            set("q_six_months", data.six_months);
+            setChecked("values_grid", data.values);
+            set("q_never_sacrifice", data.never_sacrifice);
+            set("q_misaligned", data.misaligned);
+            setScale("scale_money", data.money_drive);
+            set("q_vision_10y", data.vision_10y);
+            set("q_income", data.income);
+            set("q_success_def", data.success_def);
+            setChecked("workenv_grid", data.work_env);
+            set("q_legacy", data.legacy);
+            set("q_self_desc", data.self_desc);
+            setChecked("roles_grid", data.roles);
+            set("q_limiting_belief", data.limiting_belief);
+            set("q_others_say", data.others_say);
+            set("q_imposter", data.imposter);
+            set("q_fears", data.fears);
+            set("q_sabotage", data.sabotage);
+            set("q_constraints", data.constraints);
+            set("q_past_failures", data.past_failures);
+            setScale("scale_procras", data.procras);
+            set("q_best_decision", data.best_decision);
+            set("q_worst_decision", data.worst_decision);
+            setChecked("decision_grid", data.decision_style);
+            set("q_avoided_decision", data.avoided_decision);
+            set("q_people", data.people);
+            set("q_mentors", data.mentors);
+            set("q_assets", data.assets);
+            set("q_network", data.network);
+            setScale("scale_risk", data.risk);
+            set("q_no_fail", data.no_fail);
+            set("q_projects", data.projects);
+            set("q_experiments", data.experiments);
+            set("q_start_now", data.start_now);
+
+            updateProgress();
+            saveToLocal();
+            const status = document.getElementById("importStatus");
+            status.textContent = `✓ Session loaded from "${file.name}" — ${new Date().toLocaleTimeString()}`;
+            showToast("Session imported successfully ✓");
+          } catch (err) {
+            console.error("[Import] Failed to parse JSON:", err.message);
+            document.getElementById("importStatus").textContent =
+              "✗ Invalid JSON file — could not import.";
+            showToast("Import failed — check file format");
+          }
+          // Reset input so same file can be re-imported if needed
+          event.target.value = "";
+        };
+        reader.readAsText(file);
+      }
+
+      function manualSave() {
+        saveToLocal();
+        const dot = document.getElementById("autosaveDot");
+        const lbl = document.getElementById("autosaveLabel");
+        dot.className = "autosave-dot saved";
+        lbl.textContent = "saved";
+        setTimeout(() => {
+          dot.className = "autosave-dot";
+          lbl.textContent = "auto-save";
+        }, 2000);
+        showToast("Session saved to browser ✓");
+      }
+
+      function downloadJSON() {
+        const data = collectAnswers();
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "kyth-answers.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("JSON downloaded ✓");
+      }
+
+      // ═══════════════════════════════════════════════
+      // TOAST
+      // ═══════════════════════════════════════════════
+
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2500);
+      }
+
+      // ═══════════════════════════════════════════════
+      // KEYBOARD SHORTCUTS
+      // ═══════════════════════════════════════════════
+
+      document.addEventListener("keydown", function (e) {
+        if (e.ctrlKey || e.metaKey) {
+          if (e.key === "s") {
+            e.preventDefault();
+            manualSave();
+          }
+          if (e.key === "a") {
+            e.preventDefault();
+            generatePrompt();
+          }
+          if (e.key === "d") {
+            e.preventDefault();
+            downloadJSON();
+          }
+          if (e.key === "i") {
+            e.preventDefault();
+            document.getElementById("importFileInput").click();
+          }
+        }
+      });
+
+      // ═══════════════════════════════════════════════
+      // BOOT — wire everything via addEventListener
+      // ═══════════════════════════════════════════════
+
+      initUI();
+      loadFromLocal();
+      updateProgress();
+
+      document
+        .getElementById("btnGenerate")
+        .addEventListener("click", generatePrompt);
+      document
+        .getElementById("btnDownload")
+        .addEventListener("click", downloadJSON);
+      document
+        .getElementById("btnImport")
+        .addEventListener("click", function () {
+          document.getElementById("importFileInput").click();
+        });
+      document.getElementById("btnSave").addEventListener("click", manualSave);
+      document
+        .getElementById("btnPrint")
+        .addEventListener("click", function () {
+          window.print();
+        });
+      document
+        .getElementById("importFileInput")
+        .addEventListener("change", importJSON);
+      document
+        .getElementById("btnExportPDF")
+        .addEventListener("click", exportPDF);
+      document
+        .getElementById("btnExportTxtFormatted")
+        .addEventListener("click", exportTxtFormatted);
+      document
+        .getElementById("btnExportTxtPlain")
+        .addEventListener("click", exportTxtPlain);
+      document
+        .getElementById("themeToggle")
+        .addEventListener("click", function () {
+          const html = document.documentElement;
+          html.setAttribute(
+            "data-theme",
+            html.getAttribute("data-theme") === "dark" ? "light" : "dark",
+          );
+        scheduleRadarUpdate();
+        });
+
+      document.querySelectorAll(".section-header").forEach(function (header) {
+        header.addEventListener("click", function () {
+          toggleSection(this);
+        });
+      });
+
+      document.querySelector(".main").addEventListener("input", handleInput);
+      document.querySelector(".main").addEventListener("change", handleInput);
+    </script>
+  </body>
+</html>
