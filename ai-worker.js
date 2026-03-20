@@ -1,22 +1,11 @@
 /**
- * Cloudflare Worker — AI Proxy for Deep Life Analysis
- * 
- * Deploy this as a Cloudflare Worker, then bind it to your HTML page.
- * The AI token stays server-side; only the Worker URL is exposed.
- * 
- * SETUP:
- * 1. Create a Worker at: https://dash.cloudflare.com/workers
- * 2. Add a Cloudflare Workers AI binding:
- *    - Name: AI
- *    - Type: Workers AI
- *    - Model: @cf/meta/llama-3.1-8b-instruct (or any available model)
- * 3. Deploy this script
- * 4. Update the AI_ENDPOINT in your HTML to your Worker URL
- *    e.g. https://deep-life-ai.your-subdomain.workers.dev/ai
+ * Kyth — AI Proxy Worker
+ * Uses Cloudflare Workers AI for completion.
+ * Model: @cf/meta/llama-3-8b-instruct
  */
 
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -33,7 +22,7 @@ export default {
 
     try {
       const body = await request.json();
-      const { prompt, model } = body;
+      const { prompt } = body;
 
       if (!prompt || typeof prompt !== "string") {
         return new Response(
@@ -42,20 +31,22 @@ export default {
         );
       }
 
-      const aiModel = model || "@cf/meta/llama-3.1-8b-instruct";
-
-      const aiResponse = await env.AI.run(aiModel, {
-        messages: [{ role: "user", content: prompt }],
-        stream: true,
+      const result = await env.AI.run("@cf/meta/llama-3-8b-instruct", {
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: prompt },
+        ],
       });
 
-      return new Response(aiResponse, {
-        headers: {
-          "Content-Type": "text/event-stream; charset=utf-8",
-          "X-Model": aiModel,
-          ...corsHeaders,
-        },
-      });
+      return new Response(
+        JSON.stringify({ response: result.response }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            ...corsHeaders,
+          },
+        }
+      );
     } catch (err) {
       console.error("Worker error:", err);
       return new Response(

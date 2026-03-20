@@ -56,7 +56,6 @@
         min-height: 100vh;
       }
 
-      /* ── TOP BAR ── */
       .topbar {
         position: sticky;
         top: 0;
@@ -156,7 +155,6 @@
         border-radius: 50%;
       }
 
-      /* ── LAYOUT ── */
       .layout {
         display: flex;
         gap: 0;
@@ -223,7 +221,6 @@
         max-width: 760px;
       }
 
-      /* ── HERO ── */
       .hero {
         margin-bottom: 3rem;
       }
@@ -259,7 +256,6 @@
         margin: 2.5rem 0;
       }
 
-      /* ── SECTION ── */
       .section {
         margin-bottom: 1.5rem;
       }
@@ -330,7 +326,6 @@
         display: block;
       }
 
-      /* ── QUESTION ── */
       .q-group {
         margin-bottom: 1.75rem;
       }
@@ -500,7 +495,6 @@
         color: var(--bg);
       }
 
-      /* ── RADAR CHART ── */
       .radar-wrap {
         display: flex;
         align-items: center;
@@ -515,7 +509,6 @@
         max-width: 320px;
       }
 
-      /* ── SCORES ── */
       .score-row {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -542,7 +535,6 @@
         letter-spacing: 0.08em;
       }
 
-      /* ── EXPORT PANEL ── */
       .export-panel {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -566,23 +558,6 @@
         flex-wrap: wrap;
       }
 
-      .generated-prompt {
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 1.25rem;
-        font-family: "IBM Plex Mono", monospace;
-        font-size: 12px;
-        color: var(--text-muted);
-        max-height: 320px;
-        overflow-y: auto;
-        white-space: pre-wrap;
-        line-height: 1.7;
-        margin-top: 1.5rem;
-        display: none;
-      }
-
-      /* ── TOAST ── */
       .toast {
         position: fixed;
         bottom: 2rem;
@@ -605,7 +580,6 @@
         transform: translateY(0);
       }
 
-      /* ── KBD ── */
       .kbd-hint {
         display: flex;
         gap: 16px;
@@ -625,50 +599,6 @@
         padding: 2px 6px;
         font-size: 11px;
         font-family: "IBM Plex Mono", monospace;
-      }
-
-      @media (max-width: 768px) {
-        .sidebar {
-          display: none;
-        }
-        .main {
-          padding: 1.5rem;
-        }
-        .hero h1 {
-          font-size: 1.8rem;
-        }
-        .score-row {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-
-      /* ── SCROLLBAR ── */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: var(--border);
-        border-radius: 3px;
-      }
-
-      /* ── PRINT ── */
-      @media print {
-        .topbar,
-        .sidebar,
-        .export-panel,
-        .kbd-hint {
-          display: none;
-        }
-        body {
-          background: white;
-          color: black;
-        }
-        .section-body {
-          display: block !important;
-        }
       }
 
       .autosave-indicator {
@@ -693,7 +623,6 @@
         background: var(--success);
       }
 
-      /* ── AI RESULT PANEL ── */
       .ai-panel {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -757,7 +686,7 @@
         font-weight: 600;
       }
 
-      .ai-streaming {
+      .ai-loading {
         font-family: "IBM Plex Mono", monospace;
         font-size: 13px;
         color: var(--text-muted);
@@ -782,29 +711,38 @@
         }
       }
 
-      .ai-plain {
-        white-space: pre-wrap;
-        font-family: "DM Sans", sans-serif;
-        font-size: 14px;
-        line-height: 1.8;
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          padding: 1.5rem;
+        }
+        .hero h1 {
+          font-size: 1.8rem;
+        }
+        .score-row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
       }
 
       @media print {
         .topbar,
         .sidebar,
         .export-panel,
-        .kbd-hint,
-        .ai-panel-header .ai-export-btns {
+        .kbd-hint {
           display: none;
-        }
-        .ai-panel {
-          border: none;
-          margin: 0;
-          display: block !important;
-        }
-        .ai-content {
-          max-height: none;
-          overflow: visible;
         }
         body {
           background: white;
@@ -817,7 +755,6 @@
     </style>
   </head>
   <body>
-    <!-- TOP BAR -->
     <div class="topbar">
       <div class="topbar-brand">
         Kyth <span>/ Self-Discovery Tool</span>
@@ -848,9 +785,7 @@
       </div>
     </div>
 
-    <!-- LAYOUT -->
     <div class="layout">
-      <!-- SIDEBAR -->
       <nav class="sidebar">
         <div class="sidebar-label">Sections</div>
         <a class="sidebar-item" href="#s0" data-section="0"
@@ -907,7 +842,6 @@
         >
       </nav>
 
-      <!-- MAIN -->
       <main class="main">
         <div class="hero">
           <div class="hero-eyebrow">Kyth</div>
@@ -919,7 +853,6 @@
           </p>
         </div>
 
-        <!-- SCORE CARDS -->
         <div class="score-row">
           <div class="score-card">
             <div class="score-val" id="scoreCompletion">0%</div>
@@ -935,14 +868,12 @@
           </div>
         </div>
 
-        <!-- RADAR CHART -->
         <div class="radar-wrap">
           <canvas id="radarChart" width="320" height="280"></canvas>
         </div>
 
         <div class="divider"></div>
 
-        <!-- SECTIONS -->
         <!-- S1: Current Life -->
         <div class="section" id="s1">
           <div class="section-header open">
@@ -1285,7 +1216,7 @@
                 Describe your ideal life in 10 years — in vivid detail.
                 <span
                   class="help-icon"
-                  data-tip="Day-to-day life. Not a highlight reel. Where are you, what do you do, who are you with?"
+                  data-tip="Day-to-day life. Not a highlight reel. Where are you, what do you work on, who are you with?"
                   >?</span
                 >
               </div>
@@ -1826,7 +1757,7 @@
         };
         const getChecked = (id) => {
           return Array.from(
-            document.querySelectorAll(`#${id} .checkbox-item.checked`),
+            document.querySelectorAll(`#${id} .checkbox-item.checked`)
           ).map((el) => el.dataset.value);
         };
 
@@ -1961,8 +1892,7 @@
           return !!document.querySelector(`#${id} .scale-btn.selected`);
         if (id.endsWith("_grid"))
           return (
-            document.querySelectorAll(`#${id} .checkbox-item.checked`).length >
-            0
+            document.querySelectorAll(`#${id} .checkbox-item.checked`).length > 0
           );
         const el = document.getElementById(id);
         return el && el.value.trim().length > 2;
@@ -1983,7 +1913,7 @@
               "section-badge" + (filled === total ? " done" : "");
           }
           const sideItem = document.querySelector(
-            `.sidebar-item[data-section="${secId.replace("s", "")}"]`,
+            `.sidebar-item[data-section="${secId.replace("s", "")}"]`
           );
           if (sideItem) {
             sideItem.classList.remove("done", "partial");
@@ -2000,9 +1930,8 @@
         const offset = circumference - (pct / 100) * circumference;
         document.getElementById("progressRing").style.strokeDashoffset = offset;
 
-        // Focus score: based on attention scale
         const attnSel = document.querySelector(
-          "#scale_attention .scale-btn.selected",
+          "#scale_attention .scale-btn.selected"
         );
         const distractTxt = document.getElementById("q_distractions");
         if (attnSel) {
@@ -2027,29 +1956,28 @@
             labels[focusScore] || focusScore;
         }
 
-        // Procrastination risk
         const procrasSel = document.querySelector(
-          "#scale_procras .scale-btn.selected",
+          "#scale_procras .scale-btn.selected"
         );
         if (procrasSel) {
           const val = parseInt(procrasSel.dataset.val);
           const level =
-            val <= 3
-              ? "Low"
-              : val <= 6
-                ? "Med"
-                : val <= 8
-                  ? "High"
-                  : "Very High";
+            val <= 3 ? "Low" : val <= 6 ? "Med" : val <= 8 ? "High" : "Very High";
           document.getElementById("scoreProcras").textContent = level;
         }
 
-        updateRadar();
+        scheduleRadarUpdate();
       }
 
       // ═══════════════════════════════════════════════
       // RADAR CHART
       // ═══════════════════════════════════════════════
+
+      let radarTimeout;
+      function scheduleRadarUpdate() {
+        clearTimeout(radarTimeout);
+        radarTimeout = setTimeout(updateRadar, 150);
+      }
 
       function updateRadar() {
         const canvas = document.getElementById("radarChart");
@@ -2080,17 +2008,16 @@
           r = Math.min(W, H) / 2 - 40;
         const n = labels.length;
 
-        // Get values 0–10
         const skillCount = document.querySelectorAll(
-          "#skills_grid .checkbox-item.checked",
+          "#skills_grid .checkbox-item.checked"
         ).length;
         const skillScore = Math.min(
           10,
-          (skillCount / SKILL_OPTIONS.length) * 10 + 2,
+          (skillCount / SKILL_OPTIONS.length) * 10 + 2
         );
 
         const attnSel = document.querySelector(
-          "#scale_attention .scale-btn.selected",
+          "#scale_attention .scale-btn.selected"
         );
         const focusScore = attnSel ? parseInt(attnSel.dataset.val) : 0;
 
@@ -2102,7 +2029,7 @@
         const visionScore = (visionFilled / 3) * 10;
 
         const valCount = document.querySelectorAll(
-          "#values_grid .checkbox-item.checked",
+          "#values_grid .checkbox-item.checked"
         ).length;
         const valScore = Math.min(10, valCount * 1.2);
 
@@ -2115,7 +2042,7 @@
         const selfScore = (selfFilled / 4) * 10;
 
         const riskSel = document.querySelector(
-          "#scale_risk .scale-btn.selected",
+          "#scale_risk .scale-btn.selected"
         );
         const riskScore = riskSel ? parseInt(riskSel.dataset.val) : 0;
 
@@ -2128,7 +2055,6 @@
           riskScore,
         ];
 
-        // Draw grid
         for (let ring = 1; ring <= 5; ring++) {
           const rr = (ring / 5) * r;
           ctx.beginPath();
@@ -2144,7 +2070,6 @@
           ctx.stroke();
         }
 
-        // Draw axes
         for (let i = 0; i < n; i++) {
           const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
           ctx.beginPath();
@@ -2155,7 +2080,6 @@
           ctx.stroke();
         }
 
-        // Draw data polygon
         ctx.beginPath();
         for (let i = 0; i < n; i++) {
           const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
@@ -2173,7 +2097,6 @@
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Dots
         for (let i = 0; i < n; i++) {
           const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
           const rr = (values[i] / 10) * r;
@@ -2185,7 +2108,6 @@
           ctx.fill();
         }
 
-        // Labels
         ctx.font = "12px DM Sans, sans-serif";
         ctx.fillStyle = textColor;
         ctx.textAlign = "center";
@@ -2203,11 +2125,6 @@
       // ═══════════════════════════════════════════════
 
       let saveTimeout;
-      let radarTimeout;
-      function scheduleRadarUpdate() {
-        clearTimeout(radarTimeout);
-        radarTimeout = setTimeout(updateRadar, 150);
-      }
       function handleInput() {
         updateProgress();
         clearTimeout(saveTimeout);
@@ -2228,7 +2145,7 @@
 
       function saveToLocal() {
         try {
-          localStorage.setItem("dla_answers", JSON.stringify(collectAnswers()));
+          localStorage.setItem("kyth_answers", JSON.stringify(collectAnswers()));
         } catch (e) {
           console.error("[Auto-save] Failed to save to localStorage:", e.message);
         }
@@ -2236,7 +2153,7 @@
 
       function loadFromLocal() {
         try {
-          const raw = localStorage.getItem("dla_answers");
+          const raw = localStorage.getItem("kyth_answers");
           if (!raw) return;
           const data = JSON.parse(raw);
           const set = (id, val) => {
@@ -2246,15 +2163,18 @@
           const setScale = (id, val) => {
             if (!val) return;
             const btn = document.querySelector(
-              `#${id} .scale-btn[data-val="${val}"]`,
+              `#${id} .scale-btn[data-val="${val}"]`
             );
             if (btn) btn.classList.add("selected");
           };
           const setChecked = (id, vals) => {
             if (!vals || !vals.length) return;
-            document.querySelectorAll(`#${id} .checkbox-item`).forEach((el) => {
-              if (vals.includes(el.dataset.value)) el.classList.add("checked");
-            });
+            document
+              .querySelectorAll(`#${id} .checkbox-item`)
+              .forEach((el) => {
+                if (vals.includes(el.dataset.value))
+                  el.classList.add("checked");
+              });
           };
 
           set("q_location", data.location);
@@ -2318,17 +2238,15 @@
       }
 
       // ═══════════════════════════════════════════════
+      // AI CONFIG
+      // ═══════════════════════════════════════════════
+      // Replace with your Cloudflare Worker URL
+      const AI_ENDPOINT = "kyth.mostoptimal.workers.dev";
+
+      // ═══════════════════════════════════════════════
       // PROMPT GENERATION
       // ═══════════════════════════════════════════════
 
-      // ── AI CONFIG ──────────────────────────────────────
-      // Set your Cloudflare Worker URL here.
-      // Deploy ai-worker.js as a Cloudflare Worker and paste the URL below.
-      // Example: https://deep-life-ai.your-subdomain.workers.dev/ai
-      const AI_ENDPOINT = "https://YOUR-WORKER-URL.workers.dev/ai";
-      const AI_MODEL = "@cf/meta/llama-3.1-8b-instruct";
-
-      // ── PROMPT GENERATION ───────────────────────────────
       function generatePrompt() {
         const d = collectAnswers();
         const line = (label, val) =>
@@ -2471,95 +2389,47 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
         window._lastAnalysisText = "";
         panel.classList.add("visible");
         content.innerHTML =
-          '<div class="ai-streaming"><div class="ai-spinner"></div><span>Sending to Cloudflare Workers AI — streaming response...</span><button class="btn" id="btnCancelAI" style="margin-top:12px">✕ Cancel</button></div>';
+          '<div class="ai-loading"><div class="ai-spinner"></div><span>Analysing your answers — please wait...</span></div>';
         panel.scrollIntoView({ behavior: "smooth", block: "start" });
-
-        let cancelled = false;
-        const abortCtrl = new AbortController();
-
-        document.getElementById("btnCancelAI").addEventListener("click", function () {
-          cancelled = true;
-          abortCtrl.abort();
-          content.innerHTML =
-            '<div class="ai-streaming"><span style="color:var(--text-muted)">Cancelled.</span></div>';
-        });
 
         fetch(AI_ENDPOINT, {
           method: "POST",
-          signal: abortCtrl.signal,
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: prompt, model: AI_MODEL }),
+          body: JSON.stringify({ prompt: prompt }),
         })
           .then(function (res) {
             if (!res.ok) {
               throw new Error(
-                "AI returned HTTP " + res.status + ". Check your Worker is deployed and the AI binding is configured.",
+                "AI returned HTTP " +
+                  res.status +
+                  ". Check your Worker is deployed and the AI binding is configured."
               );
             }
-            const reader = res.body.getReader();
-            const decoder = new TextDecoder();
-            let fullText = "";
-
-            content.innerHTML =
-              '<div id="aiStream" style="white-space:pre-wrap;font-family:\'DM Sans\',sans-serif;font-size:14px;line-height:1.8;color:var(--text);padding:1.75rem 2rem;min-height:200px;"></div>';
-            const streamEl = document.getElementById("aiStream");
-
-            function readChunk() {
-              reader.read().then(function (result) {
-                if (cancelled) return;
-
-                if (!result.done) {
-                  const raw = decoder.decode(result.value, { stream: true });
-                  raw.split("\n").forEach(function (line) {
-                    if (!line.trim()) return;
-                    if (line.startsWith("data:")) {
-                      try {
-                        const jsonStr = line.slice(5).trim();
-                        if (jsonStr === "[DONE]") return;
-                        const obj = JSON.parse(jsonStr);
-                        if (obj.response) {
-                          fullText += obj.response;
-                          streamEl.textContent = fullText;
-                        }
-                      } catch (e) {
-                        // partial SSE line — skip
-                      }
-                    }
-                  });
-                  readChunk();
-                } else {
-                  if (fullText && !window._lastAnalysisText) {
-                    window._lastAnalysisText = fullText;
-                    content.innerHTML = markdownToHTML(fullText);
-                    content.style.padding = "1.75rem 2rem";
-                    showToast("Analysis complete ✓");
-                  }
-                }
-              }).catch(function (err) {
-                if (cancelled) return;
-                content.innerHTML =
-                  '<div class="ai-streaming"><span style="color:var(--danger)">⚠ Stream interrupted: ' +
-                  err.message + "</span></div>";
-              });
+            return res.json();
+          })
+          .then(function (data) {
+            if (data.error) {
+              throw new Error(data.error);
             }
-            readChunk();
+            window._lastAnalysisText = data.response;
+            content.innerHTML = markdownToHTML(data.response);
+            showToast("Analysis complete ✓");
           })
           .catch(function (err) {
-            if (cancelled) return;
             content.innerHTML =
-              '<div class="ai-streaming"><span style="color:var(--danger)">⚠ Could not connect to AI Worker.<br><br>' +
-              "Check:<br>1. Worker is deployed at <code>" + AI_ENDPOINT + "</code><br>" +
-              '2. Workers AI binding "AI" is added to the Worker<br>' +
-              '3. Model is available in your Cloudflare account</span></div>';
-            console.error("AI Worker error:", err);
+              '<div class="ai-loading" style="color:var(--danger)">⚠ ' +
+              err.message +
+              '<br><br><button class="btn" onclick="generatePrompt()" style="margin-top:8px">Retry</button></div>';
+            console.error("AI error:", err);
           });
       }
 
-      // ── MARKDOWN → HTML (lightweight) ──
+      // ═══════════════════════════════════════════════
+      // MARKDOWN → HTML
+      // ═══════════════════════════════════════════════
+
       function markdownToHTML(md) {
         if (!md) return "";
-
-        // Process line by line to avoid escaping our own tags
         const lines = md.split("\n");
         let html = "";
         let inUl = false;
@@ -2576,19 +2446,19 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
             .replace(/\*(.+?)\*/g, "<em>$1</em>")
             .replace(
               /`(.+?)`/g,
-              '<code style="font-family:IBM Plex Mono,monospace;font-size:0.9em;background:var(--surface2);padding:1px 5px;border-radius:3px;">$1</code>',
+              '<code style="font-family:\'IBM Plex Mono\',monospace;font-size:0.9em;background:var(--surface2);padding:1px 5px;border-radius:3px;">$1</code>'
             );
         }
 
         lines.forEach(function (line) {
-          // Close list if needed
           if (inUl && !line.match(/^[-*] /)) {
             html += "</ul>";
             inUl = false;
           }
 
           if (line.match(/^## /)) {
-            html += "<h2>" + inlineFormat(line.replace(/^## /, "")) + "</h2>";
+            html +=
+              "<h2>" + inlineFormat(line.replace(/^## /, "")) + "</h2>";
           } else if (line.match(/^### /)) {
             html +=
               '<h3 style="font-weight:600;margin:1.2rem 0 0.4rem;color:var(--accent2)">' +
@@ -2616,7 +2486,6 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
         return html;
       }
 
-      // ── PLAIN TEXT (strip markdown) ──
       function analysisToPlainText(md) {
         return md
           .replace(/^## /gm, "\n\n━━━ ")
@@ -2627,7 +2496,10 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
           .trim();
       }
 
-      // ── EXPORTS ──
+      // ═══════════════════════════════════════════════
+      // EXPORTS
+      // ═══════════════════════════════════════════════
+
       function exportPDF() {
         if (!window._lastAnalysisText) {
           showToast("Run analysis first");
@@ -2635,16 +2507,15 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
         }
         const orig = document.title;
         document.title = "Kyth";
-        // Temporarily show only the AI panel for print
         document
           .querySelectorAll(
-            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint",
+            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint"
           )
           .forEach((el) => (el.style.display = "none"));
         window.print();
         document
           .querySelectorAll(
-            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint",
+            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint"
           )
           .forEach((el) => (el.style.display = ""));
         document.title = orig;
@@ -2655,10 +2526,10 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
           showToast("Run analysis first");
           return;
         }
-        const header = `DEEP LIFE DIRECTION ANALYSIS\nGenerated: ${new Date().toLocaleString()}\n${"═".repeat(60)}\n\n`;
+        const header = `KYTH — LIFE ANALYSIS\nGenerated: ${new Date().toLocaleString()}\n${"═".repeat(60)}\n\n`;
         const body = analysisToPlainText(window._lastAnalysisText);
-        const footer = `\n\n${"═".repeat(60)}\nGenerated by Kyth Tool`;
-        downloadText(header + body + footer, "life-analysis-formatted.txt");
+        const footer = `\n\n${"═".repeat(60)}\nGenerated by Kyth`;
+        downloadText(header + body + footer, "kyth-analysis-formatted.txt");
       }
 
       function exportTxtPlain() {
@@ -2672,7 +2543,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
           .replace(/\*(.+?)\*/g, "$1")
           .replace(/^- /gm, "• ")
           .trim();
-        downloadText(plain, "life-analysis-plain.txt");
+        downloadText(plain, "kyth-analysis-plain.txt");
       }
 
       function downloadText(text, filename) {
@@ -2693,7 +2564,6 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
         reader.onload = function (e) {
           try {
             const data = JSON.parse(e.target.result);
-            // Restore all fields using the same logic as loadFromLocal
             const set = (id, val) => {
               const el = document.getElementById(id);
               if (el && val !== undefined && val !== null) el.value = val;
@@ -2701,7 +2571,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
             const setScale = (id, val) => {
               if (!val) return;
               const btn = document.querySelector(
-                `#${id} .scale-btn[data-val="${val}"]`,
+                `#${id} .scale-btn[data-val="${val}"]`
               );
               if (btn) {
                 document
@@ -2717,7 +2587,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
                 .forEach((el) => {
                   el.classList.toggle(
                     "checked",
-                    vals.includes(el.dataset.value),
+                    vals.includes(el.dataset.value)
                   );
                 });
             };
@@ -2788,7 +2658,6 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
               "✗ Invalid JSON file — could not import.";
             showToast("Import failed — check file format");
           }
-          // Reset input so same file can be re-imported if needed
           event.target.value = "";
         };
         reader.readAsText(file);
@@ -2858,7 +2727,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
       });
 
       // ═══════════════════════════════════════════════
-      // BOOT — wire everything via addEventListener
+      // BOOT
       // ═══════════════════════════════════════════════
 
       initUI();
@@ -2900,9 +2769,9 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
           const html = document.documentElement;
           html.setAttribute(
             "data-theme",
-            html.getAttribute("data-theme") === "dark" ? "light" : "dark",
+            html.getAttribute("data-theme") === "dark" ? "light" : "dark"
           );
-        scheduleRadarUpdate();
+          updateRadar();
         });
 
       document.querySelectorAll(".section-header").forEach(function (header) {
