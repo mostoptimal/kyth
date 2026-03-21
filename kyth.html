@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.workers.dev https://*.workers.dev/*; img-src 'self' data:; frame-ancestors 'none';" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.workers.dev https://*.workers.dev/*; img-src 'self' data:; frame-ancestors 'none';"
+    />
     <title>Kyth</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
@@ -60,7 +63,7 @@
       }
 
       body {
-        font-family: 'Manrope', sans-serif;
+        font-family: "Manrope", sans-serif;
         background: var(--bg);
         color: var(--text);
         line-height: 1.6;
@@ -121,7 +124,7 @@
         gap: 2rem;
       }
       .topbar-brand {
-        font-family: 'Noto Serif', serif;
+        font-family: "Noto Serif", serif;
         font-size: 1.25rem;
         font-weight: 700;
         letter-spacing: -0.02em;
@@ -159,13 +162,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 8px;
         font-weight: 700;
         color: var(--accent);
       }
       .sync-text {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 9px;
         text-transform: uppercase;
         letter-spacing: 0.15em;
@@ -189,7 +192,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 9px;
         font-weight: 700;
         color: var(--accent);
@@ -210,7 +213,7 @@
       }
 
       .btn {
-        font-family: 'Manrope', sans-serif;
+        font-family: "Manrope", sans-serif;
         font-size: 13px;
         font-weight: 500;
         padding: 8px 16px;
@@ -228,7 +231,11 @@
         background: var(--surface-high);
       }
       .btn-accent {
-        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--accent) 0%,
+          var(--accent-dim) 100%
+        );
         color: var(--bg);
         border-color: transparent;
         font-weight: 600;
@@ -281,13 +288,13 @@
         margin-bottom: 2.5rem;
       }
       .sidebar-header h2 {
-        font-family: 'Noto Serif', serif;
+        font-family: "Noto Serif", serif;
         font-style: italic;
         font-size: 1.25rem;
         color: var(--accent-dim);
       }
       .sidebar-header p {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 9px;
         text-transform: uppercase;
         letter-spacing: 0.15em;
@@ -299,7 +306,7 @@
         flex: 1;
       }
       .sidebar-label {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 9px;
         color: var(--text-muted);
         letter-spacing: 0.15em;
@@ -313,7 +320,7 @@
         gap: 12px;
         padding: 10px 1.5rem;
         cursor: pointer;
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -364,7 +371,7 @@
         z-index: 90;
       }
       .footer-brand {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 9px;
         text-transform: uppercase;
         letter-spacing: 0.2em;
@@ -376,7 +383,7 @@
         gap: 1.5rem;
       }
       .footer-links button {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 9px;
         text-transform: uppercase;
         letter-spacing: 0.2em;
@@ -415,7 +422,7 @@
         margin-bottom: 3rem;
       }
       .hero h1 {
-        font-family: 'Noto Serif', serif;
+        font-family: "Noto Serif", serif;
         font-size: 2.8rem;
         font-weight: 700;
         line-height: 1.15;
@@ -428,7 +435,7 @@
         font-style: italic;
       }
       .hero p {
-        font-family: 'Manrope', sans-serif;
+        font-family: "Manrope", sans-serif;
         font-weight: 300;
         color: var(--text-muted);
         max-width: 540px;
@@ -454,7 +461,9 @@
         border: 1px solid var(--outline-variant);
         border-radius: 8px;
         cursor: pointer;
-        transition: all var(--transition), border-radius 0.2s;
+        transition:
+          all var(--transition),
+          border-radius 0.2s;
         user-select: none;
       }
       .section-header:hover {
@@ -466,7 +475,7 @@
         border-bottom-color: transparent;
       }
       .section-num {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 12px;
         color: var(--text-dimmer);
         width: 28px;
@@ -476,12 +485,12 @@
         color: var(--accent-dim);
       }
       .section-title {
-        font-family: 'Noto Serif', serif;
+        font-family: "Noto Serif", serif;
         font-size: 1.05rem;
         flex: 1;
       }
       .section-badge {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 10px;
         padding: 4px 10px;
         border-radius: 20px;
@@ -522,7 +531,7 @@
         display: flex;
         align-items: flex-start;
         gap: 8px;
-        font-family: 'Manrope', sans-serif;
+        font-family: "Manrope", sans-serif;
         font-size: 14px;
         font-weight: 500;
         color: var(--text);
@@ -535,7 +544,7 @@
         border-radius: 50%;
         background: var(--surface-highest);
         color: var(--text-muted);
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 10px;
         font-weight: 700;
         display: inline-flex;
@@ -554,7 +563,7 @@
         background: var(--surface-high);
         border: 1px solid var(--border);
         color: var(--text-muted);
-        font-family: 'Manrope', sans-serif;
+        font-family: "Manrope", sans-serif;
         font-size: 12px;
         font-weight: 400;
         padding: 8px 12px;
@@ -579,7 +588,7 @@
         border: none;
         border-bottom: 1px solid var(--outline-variant);
         color: var(--text);
-        font-family: 'Manrope', sans-serif;
+        font-family: "Manrope", sans-serif;
         font-size: 14px;
         padding: 8px 0;
         transition: border-color var(--transition);
@@ -628,7 +637,7 @@
         border-radius: 6px;
         background: transparent;
         color: var(--text-muted);
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 13px;
         cursor: pointer;
         transition: all var(--transition);
@@ -657,7 +666,7 @@
         display: flex;
         justify-content: space-between;
         margin-top: 8px;
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 9px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -739,13 +748,13 @@
         text-align: center;
       }
       .score-val {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 2rem;
         font-weight: 700;
         color: var(--accent);
       }
       .score-label {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 9px;
         text-transform: uppercase;
         letter-spacing: 0.15em;
@@ -764,7 +773,7 @@
         overflow: hidden;
       }
       .export-panel::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         right: 0;
@@ -775,7 +784,7 @@
         transform: translate(30%, -30%);
       }
       .export-panel h2 {
-        font-family: 'Noto Serif', serif;
+        font-family: "Noto Serif", serif;
         font-size: 1.75rem;
         margin-bottom: 0.5rem;
         position: relative;
@@ -803,7 +812,7 @@
         color: var(--accent);
         padding: 12px 20px;
         border-radius: var(--radius);
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 12px;
         opacity: 0;
         transform: translateY(8px);
@@ -825,7 +834,7 @@
         border-top: 1px solid var(--border-dim);
       }
       .kbd-hint span {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-size: 11px;
         color: var(--text-muted);
         opacity: 0.5;
@@ -836,12 +845,12 @@
         border-radius: 4px;
         padding: 3px 8px;
         font-size: 10px;
-        font-family: 'IBM Plex Mono', monospace;
+        font-family: "IBM Plex Mono", monospace;
         margin-right: 4px;
       }
 
       .autosave-indicator {
-        font-family: 'IBM Plex Mono', monospace;
+        font-family: "IBM Plex Mono", monospace;
         font-size: 10px;
         color: var(--text-muted);
         display: flex;
@@ -882,7 +891,7 @@
         border-bottom: 1px solid var(--border-dim);
       }
       .ai-panel-header h3 {
-        font-family: 'Noto Serif', serif;
+        font-family: "Noto Serif", serif;
         font-size: 1.15rem;
         font-weight: 400;
       }
@@ -901,7 +910,7 @@
         overflow-y: auto;
       }
       .ai-content h2 {
-        font-family: 'Noto Serif', serif;
+        font-family: "Noto Serif", serif;
         font-size: 1.15rem;
         font-weight: 700;
         color: var(--accent);
@@ -927,7 +936,7 @@
       }
 
       .ai-loading {
-        font-family: 'IBM Plex Mono', monospace;
+        font-family: "IBM Plex Mono", monospace;
         font-size: 13px;
         color: var(--text-muted);
         padding: 2rem;
@@ -1012,8 +1021,15 @@
         <div class="topbar-sync">
           <div class="sync-ring">
             <svg width="32" height="32" viewbox="0 0 36 36">
-              <circle class="track" cx="18" cy="18" r="15.9"/>
-              <circle class="fill" id="syncRing" cx="18" cy="18" r="15.9" stroke-dasharray="0, 100"/>
+              <circle class="track" cx="18" cy="18" r="15.9" />
+              <circle
+                class="fill"
+                id="syncRing"
+                cx="18"
+                cy="18"
+                r="15.9"
+                stroke-dasharray="0, 100"
+              />
             </svg>
             <span class="sync-ring-label" id="syncLabel">0%</span>
           </div>
@@ -1103,8 +1119,16 @@
             Risk & Experiments</a
           >
         </div>
-        <a class="sidebar-item" href="#export" data-section="export"
-          style="margin-top: auto; border-top: 1px solid var(--border-dim); padding-top: 1rem; margin-top: 1rem;"
+        <a
+          class="sidebar-item"
+          href="#export"
+          data-section="export"
+          style="
+            margin-top: auto;
+            border-top: 1px solid var(--border-dim);
+            padding-top: 1rem;
+            margin-top: 1rem;
+          "
           ><div class="sidebar-dot"></div>
           Generate Prompt</a
         >
@@ -2034,7 +2058,7 @@
         };
         const getChecked = (id) => {
           return Array.from(
-            document.querySelectorAll(`#${id} .checkbox-item.checked`)
+            document.querySelectorAll(`#${id} .checkbox-item.checked`),
           ).map((el) => el.dataset.value);
         };
 
@@ -2169,7 +2193,8 @@
           return !!document.querySelector(`#${id} .scale-btn.selected`);
         if (id.endsWith("_grid"))
           return (
-            document.querySelectorAll(`#${id} .checkbox-item.checked`).length > 0
+            document.querySelectorAll(`#${id} .checkbox-item.checked`).length >
+            0
           );
         const el = document.getElementById(id);
         return el && el.value.trim().length > 2;
@@ -2190,7 +2215,7 @@
               "section-badge" + (filled === total ? " done" : "");
           }
           const sideItem = document.querySelector(
-            `.sidebar-item[data-section="${secId.replace("s", "")}"]`
+            `.sidebar-item[data-section="${secId.replace("s", "")}"]`,
           );
           if (sideItem) {
             sideItem.classList.remove("done", "partial");
@@ -2207,10 +2232,11 @@
         const circumference = 88;
         const offset = circumference - (pct / 100) * circumference;
         document.getElementById("progressRing").style.strokeDashoffset = offset;
-        document.getElementById("syncRing").style.strokeDasharray = pct + ", 100";
+        document.getElementById("syncRing").style.strokeDasharray =
+          pct + ", 100";
 
         const attnSel = document.querySelector(
-          "#scale_attention .scale-btn.selected"
+          "#scale_attention .scale-btn.selected",
         );
         const distractTxt = document.getElementById("q_distractions");
         if (attnSel) {
@@ -2236,12 +2262,18 @@
         }
 
         const procrasSel = document.querySelector(
-          "#scale_procras .scale-btn.selected"
+          "#scale_procras .scale-btn.selected",
         );
         if (procrasSel) {
           const val = parseInt(procrasSel.dataset.val);
           const level =
-            val <= 3 ? "Low" : val <= 6 ? "Med" : val <= 8 ? "High" : "Very High";
+            val <= 3
+              ? "Low"
+              : val <= 6
+                ? "Med"
+                : val <= 8
+                  ? "High"
+                  : "Very High";
           document.getElementById("scoreProcras").textContent = level;
         }
 
@@ -2288,15 +2320,15 @@
         const n = labels.length;
 
         const skillCount = document.querySelectorAll(
-          "#skills_grid .checkbox-item.checked"
+          "#skills_grid .checkbox-item.checked",
         ).length;
         const skillScore = Math.min(
           10,
-          (skillCount / SKILL_OPTIONS.length) * 10 + 2
+          (skillCount / SKILL_OPTIONS.length) * 10 + 2,
         );
 
         const attnSel = document.querySelector(
-          "#scale_attention .scale-btn.selected"
+          "#scale_attention .scale-btn.selected",
         );
         const focusScore = attnSel ? parseInt(attnSel.dataset.val) : 0;
 
@@ -2308,7 +2340,7 @@
         const visionScore = (visionFilled / 3) * 10;
 
         const valCount = document.querySelectorAll(
-          "#values_grid .checkbox-item.checked"
+          "#values_grid .checkbox-item.checked",
         ).length;
         const valScore = Math.min(10, valCount * 1.2);
 
@@ -2321,7 +2353,7 @@
         const selfScore = (selfFilled / 4) * 10;
 
         const riskSel = document.querySelector(
-          "#scale_risk .scale-btn.selected"
+          "#scale_risk .scale-btn.selected",
         );
         const riskScore = riskSel ? parseInt(riskSel.dataset.val) : 0;
 
@@ -2424,9 +2456,15 @@
 
       function saveToLocal() {
         try {
-          localStorage.setItem("kyth_answers", JSON.stringify(collectAnswers()));
+          localStorage.setItem(
+            "kyth_answers",
+            JSON.stringify(collectAnswers()),
+          );
         } catch (e) {
-          console.error("[Auto-save] Failed to save to localStorage:", e.message);
+          console.error(
+            "[Auto-save] Failed to save to localStorage:",
+            e.message,
+          );
         }
       }
 
@@ -2442,18 +2480,15 @@
           const setScale = (id, val) => {
             if (!val) return;
             const btn = document.querySelector(
-              `#${id} .scale-btn[data-val="${val}"]`
+              `#${id} .scale-btn[data-val="${val}"]`,
             );
             if (btn) btn.classList.add("selected");
           };
           const setChecked = (id, vals) => {
             if (!vals || !vals.length) return;
-            document
-              .querySelectorAll(`#${id} .checkbox-item`)
-              .forEach((el) => {
-                if (vals.includes(el.dataset.value))
-                  el.classList.add("checked");
-              });
+            document.querySelectorAll(`#${id} .checkbox-item`).forEach((el) => {
+              if (vals.includes(el.dataset.value)) el.classList.add("checked");
+            });
           };
 
           set("q_location", data.location);
@@ -2512,7 +2547,10 @@
           set("q_start_now", data.start_now);
           updateProgress();
         } catch (e) {
-          console.error("[Auto-load] Failed to load from localStorage:", e.message);
+          console.error(
+            "[Auto-load] Failed to load from localStorage:",
+            e.message,
+          );
         }
       }
 
@@ -2520,7 +2558,7 @@
       // AI CONFIG
       // ═══════════════════════════════════════════════
       // IMPORTANT: Update this to your deployed Worker URL
-      const AI_ENDPOINT = "https://kyth-ai-worker.YOUR_SUBDOMAIN.workers.dev";
+      const AI_ENDPOINT = "https://kythworkerai.mostoptimal.workers.dev/";
 
       // ═══════════════════════════════════════════════
       // PROMPT GENERATION
@@ -2681,7 +2719,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
               throw new Error(
                 "AI returned HTTP " +
                   res.status +
-                  ". Check your Worker is deployed and the AI binding is configured."
+                  ". Check your Worker is deployed and the AI binding is configured.",
               );
             }
             return res.json();
@@ -2725,7 +2763,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
             .replace(/\*(.+?)\*/g, "<em>$1</em>")
             .replace(
               /`(.+?)`/g,
-              '<code style="font-family:\'IBM Plex Mono\',monospace;font-size:0.9em;background:var(--surface2);padding:1px 5px;border-radius:3px;">$1</code>'
+              "<code style=\"font-family:'IBM Plex Mono',monospace;font-size:0.9em;background:var(--surface2);padding:1px 5px;border-radius:3px;\">$1</code>",
             );
         }
 
@@ -2736,8 +2774,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
           }
 
           if (line.match(/^## /)) {
-            html +=
-              "<h2>" + inlineFormat(line.replace(/^## /, "")) + "</h2>";
+            html += "<h2>" + inlineFormat(line.replace(/^## /, "")) + "</h2>";
           } else if (line.match(/^### /)) {
             html +=
               '<h3 style="font-weight:600;margin:1.2rem 0 0.4rem;color:var(--accent2)">' +
@@ -2788,13 +2825,13 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
         document.title = "Kyth";
         document
           .querySelectorAll(
-            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint"
+            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint",
           )
           .forEach((el) => (el.style.display = "none"));
         window.print();
         document
           .querySelectorAll(
-            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint"
+            ".section, .hero, .score-row, .radar-wrap, .divider, .export-panel, .kbd-hint",
           )
           .forEach((el) => (el.style.display = ""));
         document.title = orig;
@@ -2850,7 +2887,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
             const setScale = (id, val) => {
               if (!val) return;
               const btn = document.querySelector(
-                `#${id} .scale-btn[data-val="${val}"]`
+                `#${id} .scale-btn[data-val="${val}"]`,
               );
               if (btn) {
                 document
@@ -2866,7 +2903,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
                 .forEach((el) => {
                   el.classList.toggle(
                     "checked",
-                    vals.includes(el.dataset.value)
+                    vals.includes(el.dataset.value),
                   );
                 });
             };
@@ -3048,7 +3085,7 @@ TONE: Direct, honest, analytical, constructive. Reference their actual answers t
           const html = document.documentElement;
           html.setAttribute(
             "data-theme",
-            html.getAttribute("data-theme") === "dark" ? "light" : "dark"
+            html.getAttribute("data-theme") === "dark" ? "light" : "dark",
           );
           updateRadar();
         });
